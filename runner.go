@@ -40,7 +40,9 @@ func main() {
 		productVersions := ExtendedProductVersion(version.GetVersion())
 		// The following methods IsNodeEOL, IsNodeEOL, etc,. are controlled
 		// by runner.go and developers creating a plugin need not
-		// implement these methods.
+		// implement these methods. Developers creating plugin
+		// must only return the version numbers in the GetVersion
+		// response
 		nodeResult := productVersions.IsNodeEOL(productVersions.Node)
 		pythonResult := productVersions.IsPythonEOL(productVersions.Python)
 		// More methods here ..
