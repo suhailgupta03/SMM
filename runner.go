@@ -38,8 +38,12 @@ func main() {
 		new type which is distinct but derives from the ProductVersion
 		*/
 		productVersions := ExtendedProductVersion(version.GetVersion())
+		// The following methods IsNodeEOL, IsNodeEOL, etc,. are controlled
+		// by runner.go and developers creating a plugin need not
+		// implement these methods.
 		nodeResult := productVersions.IsNodeEOL(productVersions.Node)
 		pythonResult := productVersions.IsPythonEOL(productVersions.Python)
+		// More methods here ..
 		fmt.Println("Results for " + pluginDirName)
 		fmt.Printf("Node %t Python %t \n", nodeResult, pythonResult)
 		fmt.Println("========")
