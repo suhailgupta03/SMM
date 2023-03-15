@@ -8,47 +8,56 @@ import (
 	"plugin"
 )
 
+func getRepos() []string {
+	repos := make([]string, 0)
+	repos = append(repos, "repo1")
+	repos = append(repos, "repo2")
+	return repos
+}
+
 func main() {
 	entries, err := os.ReadDir("plugins")
 	if err != nil {
 		panic(err)
 	}
 
-	for _, e := range entries {
-		pluginDirName := e.Name()
-		pluginFileName := pluginDirName + ".so"
-		pluginFilePath := filepath.Join("plugins", pluginDirName, pluginFileName)
-		fmt.Println(pluginFilePath)
-		plug, plugErr := plugin.Open(pluginFilePath)
-		if plugErr != nil {
-			panic(plugErr)
-		}
-		symbol, sErr := plug.Lookup("Version")
-		if sErr != nil {
-			panic(sErr)
-		}
-		var version types.Version
-		version, ok := symbol.(types.Version)
-		if !ok {
-			panic("Type mismatch")
+	repos := getRepos()
+	for _, repo := range repos {
+		for _, e := range entries {
+			/**
+			Load all the plugins and run for each repo
+			*/
+			pluginDirName := e.Name()
+			pluginFileName := pluginDirName + ".so"
+			pluginFilePath := filepath.Join("plugins", pluginDirName, pluginFileName)
+			plug, plugErr := plugin.Open(pluginFilePath)
+			if plugErr != nil {
+				panic(plugErr)
+			}
+			symbol, sErr := plug.Lookup("Check")
+			if sErr != nil {
+				panic(sErr)
+			}
+			var maturity types.Maturity
+			maturity, ok := symbol.(types.Maturity)
+			if !ok {
+				panic("Type mismatch")
+			}
+
+			/**
+			Now we extract the ProductVersion and cast that into the
+			new type which is distinct but derives from the ProductVersion
+			*/
+			maturityValue := maturity.Check(repo)
+			maturityCheck := ExtendedMaturityCheck(maturityValue)
+			// The following methods IsNodeEOL, IsNodeEOL, etc,. are controlled
+			// by runner.go and developers creating a plugin need not
+			// implement these methods. Developers creating plugin
+			// must only return the version numbers in the GetVersion
+			// response
+			maturityCheck.Print(repo, pluginDirName, maturityValue)
+			fmt.Println("========")
 		}
 
-		/**
-		Now we extract the ProductVersion and cast that into the
-		new type which is distinct but derives from the ProductVersion
-		*/
-		productVersions := ExtendedProductVersion(version.GetVersion())
-		// The following methods IsNodeEOL, IsNodeEOL, etc,. are controlled
-		// by runner.go and developers creating a plugin need not
-		// implement these methods. Developers creating plugin
-		// must only return the version numbers in the GetVersion
-		// response
-		nodeResult := productVersions.IsNodeEOL(productVersions.Node)
-		pythonResult := productVersions.IsPythonEOL(productVersions.Python)
-		// More methods here ..
-		fmt.Println("Results for " + pluginDirName)
-		fmt.Printf("Node %t Python %t \n", nodeResult, pythonResult)
-		fmt.Println("========")
 	}
-
 }

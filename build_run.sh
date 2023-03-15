@@ -1,3 +1,9 @@
-go build -buildmode=plugin -o plugins/analytics/analytics.so plugins/analytics/analytics.go
-go build -buildmode=plugin -o plugins/integrations/integrations.so plugins/integrations/integrations.go
+PLUGINS=("djangoeol" "nodeeol" "pythoneol")
+for plugin in "${PLUGINS[@]}"
+do
+  go build -buildmode=plugin -o plugins/"$plugin"/"$plugin".so plugins/"$plugin"/"$plugin".go
+  echo "Building ${plugin}"
+
+done
+
 go run runner.go depchecker.go

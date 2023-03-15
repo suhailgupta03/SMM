@@ -1,23 +1,12 @@
 package main
 
 import (
-	"cuddly-eureka-/http"
 	"cuddly-eureka-/types"
 	"fmt"
 )
 
-type ExtendedProductVersion types.ProductVersion
+type ExtendedMaturityCheck types.MaturityCheck
 
-func (pv *ExtendedProductVersion) IsNodeEOL(version string) bool {
-	details := http.GetEOLDetails("node")
-	fmt.Println(details.EOLDate, " for node")
-	// add logic to compute EOL
-	return false
-}
-
-func (pv *ExtendedProductVersion) IsPythonEOL(version string) bool {
-	details := http.GetEOLDetails("python")
-	fmt.Println(details.EOLDate, " for python")
-	// add logic to compute EOL
-	return true
+func (pv *ExtendedMaturityCheck) Print(repoName string, checkName string, checkValue types.MaturityCheck) {
+	fmt.Printf(checkName+" in "+repoName+" has a maturity value of %d \n", checkValue)
 }

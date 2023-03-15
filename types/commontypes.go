@@ -1,14 +1,14 @@
 package types
 
-type ProductVersion struct {
-	Node    string
-	Vue     string
-	Python  string
-	Django  string
-	React   string
-	Angular string
-}
+type MaturityCheck int
 
-type Version interface {
-	GetVersion() ProductVersion
+// Reference: https://go.dev/ref/spec#Iota
+const (
+	Yes MaturityCheck = iota
+	No
+	NA
+)
+
+type Maturity interface {
+	Check(repoPath string) MaturityCheck
 }
