@@ -23,7 +23,7 @@ type HasAutomatedTests struct {
 }
 
 // Check holds the logic that decides the value of MaturityCheck
-func (hat HasAutomatedTests) Check() types.MaturityCheck {
+func (hat HasAutomatedTests) Check(repoPath string) types.MaturityCheck {
 	// Custom Logic Inside the Check Method
 	return types.Yes
 }
