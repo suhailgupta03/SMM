@@ -1,6 +1,9 @@
 package main
 
 import (
+	"cuddly-eureka-/appconstants"
+	"cuddly-eureka-/conf/initialize"
+	"cuddly-eureka-/github"
 	"cuddly-eureka-/types"
 	"fmt"
 	"os"
@@ -8,11 +11,20 @@ import (
 	"plugin"
 )
 
-func getRepos() []string {
-	repos := make([]string, 0)
-	repos = append(repos, "repo1")
-	repos = append(repos, "repo2")
-	return repos
+var (
+	appConstants appconstants.Constants
+)
+
+func getRepos(token string, owner string) []github.RepoLanguageDetails {
+	g := &github.GitHub{}
+	g = g.Init(token)
+	repoNames, rErr := g.GetAuthenticatedUserRepos()
+	if rErr != nil {
+		panic("Failed to fetch the repo names. Check token.")
+	}
+	fmt.Printf("Fetched %d repos for %s\n", len(repoNames), owner)
+	repoLanguageDetails := g.GetRepoLanguages(repoNames, owner)
+	return repoLanguageDetails
 }
 
 func main() {
@@ -20,8 +32,13 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	conf, err := initialize.Config()
+	if err != nil {
+		panic("Failed to read the configuration file")
+	}
+	appConstants = initialize.Constants(conf)
+	repos := getRepos(appConstants.GitHubToken, appConstants.GitHubOwner)
 
-	repos := getRepos()
 	for _, repo := range repos {
 		for _, e := range entries {
 			/**
@@ -48,15 +65,11 @@ func main() {
 			Now we extract the ProductVersion and cast that into the
 			new type which is distinct but derives from the ProductVersion
 			*/
-			maturityValue := maturity.Check(repo)
+			maturityValue := maturity.Check(repo.Name)
+
 			maturityCheck := ExtendedMaturityCheck(maturityValue)
-			// The following methods IsNodeEOL, IsNodeEOL, etc,. are controlled
-			// by runner.go and developers creating a plugin need not
-			// implement these methods. Developers creating plugin
-			// must only return the version numbers in the GetVersion
-			// response
-			maturityCheck.Print(repo, pluginDirName, maturityValue)
-			fmt.Println("========")
+			maturityCheck.Print(repo.Name, pluginDirName, maturityValue)
+			fmt.Println("========", maturityValue)
 		}
 
 	}
