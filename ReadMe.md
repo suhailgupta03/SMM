@@ -44,7 +44,12 @@ to check the EOL of the stack.
 
 There are two ways by which configuration values could be passed.
 * Updating the values in `conf.toml`
-* Exporting the values in the shell that will execute the program
+* Exporting the values in the current shell that will execute the program. This can be done as follows
+```shell
+export TOKEN="MYTOKEN"
+export OWNER="GITHUB_USERNAME"
+export FOO="BAR"
+```
 
 Values from `conf.toml` will be prioritized over values exported
 from the executing shell. The snippet from [init.go](conf/initialize/init.go)
