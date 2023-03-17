@@ -37,3 +37,27 @@ var Check HasAutomatedTests
 and invokes `Check` method. It creates a new type [ExtendedMaturityCheck](./depchecker.go)
 with the same underlying type `MaturityCheck` but adds new methods
 to check the EOL of the stack.
+
+### Working with the configuration variables
+
+There are two ways by which configuration values could be passed.
+* Updating the values in `conf.toml`
+* Exporting the values in the shell that will execute the program
+
+Values from `conf.toml` will be prioritized over values exported
+from the executing shell. The snippet from [init.go](conf/initialize/init.go)
+shows the handling of configuration variables.
+```go
+util.GetOR(config["TOKEN"].(string), os.Getenv("TOKEN"))
+```
+
+### Running the test cases
+```shell
+go test -v ./...
+```
+To also print the code coverage use the following command
+```shell
+go test -v ./... -cover
+```
+
+_Note: If you are not exporting env variables through shell, you'll need to copy conf.toml inside the PLUGIN_NAME directory to see if GitHub dependent plugin test cases are passing_

@@ -42,28 +42,41 @@ func checkVersionFromRCFile() (*string, bool) {
 	return nil, false
 }
 
+func checkVersionFromPackageJson(g *github.GitHub, repoName, gitHubOwner string) (*string, bool) {
+	packageJson, err := g.GetPackageJSON(repoName, gitHubOwner)
+	if err != nil {
+		fmt.Printf("Failed to read package.json for %s\n", repoName)
+		return nil, false
+	}
+
+	versionFromEngines, foundFromEngine := checkVersionFromEngines(packageJson)
+	if foundFromEngine {
+		return versionFromEngines, true
+	}
+	return nil, false
+}
+
 func (node NodeEOL) Check(repoName string) types.MaturityCheck {
 	app := initialize.GetAppConstants()
 	g := &github.GitHub{}
 	g = g.Init(app.GitHubToken)
-	packageJson, err := g.GetPackageJSON("issue-test", app.GitHubOwner)
-	if err != nil {
-		fmt.Printf("Failed to read package.json for %s\n", repoName)
-	}
 	eolDetails, eolErr := http.EOLProvider(http.EOLNode)
 	if eolErr != nil {
-		panic("Failed to EOL details for " + http.EOLNode + " ")
+		panic("Failed to find EOL details for " + http.EOLNode + " ")
 	}
-
 	var existingVersion *string
-	versionFromEngines, foundFromEngine := checkVersionFromEngines(packageJson)
-	if foundFromEngine {
-		existingVersion = versionFromEngines
+
+	// 1 - Check package.json
+	versionFromPJ, foundFromPJ := checkVersionFromPackageJson(g, repoName, app.GitHubOwner)
+	if foundFromPJ {
+		existingVersion = versionFromPJ
 	}
 
+	// 2 - Check .nvmrc
 	if existingVersion == nil {
-		// Read .nvmrc file
+
 	}
+
 	if existingVersion != nil {
 		matchingVersionDetails := util.FindMatchingVersion(*existingVersion, eolDetails)
 		if util.IsVersionEOL(*existingVersion, matchingVersionDetails) {
