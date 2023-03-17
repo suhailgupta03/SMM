@@ -32,11 +32,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	conf, err := initialize.Config()
-	if err != nil {
-		panic("Failed to read the configuration file")
-	}
-	appConstants = initialize.Constants(conf)
+	appConstants = initialize.GetAppConstants()
 	repos := getRepos(appConstants.GitHubToken, appConstants.GitHubOwner)
 
 	for _, repo := range repos {

@@ -7,8 +7,7 @@ import (
 )
 
 func TestConfigurationLoad(t *testing.T) {
-	conf, _ := initialize.Config()
-	appConstants = initialize.Constants(conf)
+	appConstants = initialize.GetAppConstants()
 	assert.NotEmpty(t, appConstants.GitHubOwner, "Tests if the github owner has been loaded")
 	assert.NotEmpty(t, appConstants.GitHubToken, "Tests if the github token has been loaded")
 }
