@@ -10,5 +10,5 @@ const (
 )
 
 type Maturity interface {
-	Check(repoPath string) MaturityCheck
+	Check(repoName string) MaturityCheck
 }

@@ -3,6 +3,7 @@ package github
 import (
 	"context"
 	"cuddly-eureka-/util"
+	"encoding/json"
 	"fmt"
 	"github.com/google/go-github/v50/github"
 	"golang.org/x/oauth2"
@@ -12,7 +13,12 @@ type GitHubActions interface {
 	GetAuthenticatedUserRepos() ([]string, error)
 	GetOrgRepos(org string) ([]string, error)
 	GetRepoLanguages(repoName []string, owner string) []RepoLanguageDetails
-	GetSingleRepoLanguages(repoName string, owner string) chan RepoLanguageResponse
+	GetSingleRepoLanguages(repoName, owner string) chan RepoLanguageResponse
+	GetRepoContent(repoName, owner, filename string) (*string, error)
+}
+
+type RepositoryActions interface {
+	GetPackageJSON(repoName, owner string) (map[string]interface{}, error)
 }
 
 type RepoLanguageDetails struct {
@@ -100,7 +106,7 @@ func (g *GitHub) GetRepoLanguages(repoNames []string, owner string) []RepoLangua
 	return languages
 }
 
-func (g *GitHub) GetSingleRepoLanguages(repoName string, owner string) chan RepoLanguageResponse {
+func (g *GitHub) GetSingleRepoLanguages(repoName, owner string) chan RepoLanguageResponse {
 	langDetailsChannel := make(chan RepoLanguageResponse)
 	go func() {
 		langMap, _, err := g.client.Repositories.ListLanguages(g.ctx, owner, repoName)
@@ -118,4 +124,27 @@ func (g *GitHub) GetSingleRepoLanguages(repoName string, owner string) chan Repo
 		}
 	}()
 	return langDetailsChannel
+}
+
+func (g *GitHub) GetRepoContent(repoName, owner, filename string) (*string, error) {
+	c, _, _, err := g.client.Repositories.GetContents(g.ctx, owner, repoName, filename, nil)
+	if err != nil {
+		return nil, err
+	} else {
+		con, _ := c.GetContent()
+		return &con, nil
+	}
+}
+
+type PackageJson map[string]interface{}
+
+func (g *GitHub) GetPackageJSON(repoName, owner string) (PackageJson, error) {
+	content, err := g.GetRepoContent(repoName, owner, "package.json")
+	if err != nil {
+		return nil, err
+	} else {
+		var jsonMap PackageJson
+		json.Unmarshal([]byte(*content), &jsonMap)
+		return jsonMap, nil
+	}
 }

@@ -26,3 +26,11 @@ func Constants(config toml.RawConfig) appconstants.Constants {
 		GitHubOwner: config["OWNER"].(string),
 	}
 }
+
+func GetAppConstants() appconstants.Constants {
+	config, err := Config()
+	if err != nil {
+		panic("Failed to read the configuration file")
+	}
+	return Constants(config)
+}

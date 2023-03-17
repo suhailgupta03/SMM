@@ -20,7 +20,7 @@ func getRepos(token string, owner string) []github.RepoLanguageDetails {
 	g = g.Init(token)
 	repoNames, rErr := g.GetAuthenticatedUserRepos()
 	if rErr != nil {
-		panic("Failed to fetch the repo names. Check token.")
+		panic("Failed to fetch the repo names. Check token." + rErr.Error())
 	}
 	fmt.Printf("Fetched %d repos for %s\n", len(repoNames), owner)
 	repoLanguageDetails := g.GetRepoLanguages(repoNames, owner)
@@ -66,9 +66,9 @@ func main() {
 			new type which is distinct but derives from the ProductVersion
 			*/
 			maturityValue := maturity.Check(repo.Name)
-
-			maturityCheck := ExtendedMaturityCheck(maturityValue)
-			maturityCheck.Print(repo.Name, pluginDirName, maturityValue)
+			//
+			//maturityCheck := ExtendedMaturityCheck(maturityValue)
+			//maturityCheck.Print(repo.Name, pluginDirName, maturityValue)
 			fmt.Println("========", maturityValue)
 		}
 
