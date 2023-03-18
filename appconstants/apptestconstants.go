@@ -6,5 +6,6 @@ type TestConstants struct {
 
 type TestRepos struct {
 	Node  string
+	NVMRC string
 	Empty string
 }

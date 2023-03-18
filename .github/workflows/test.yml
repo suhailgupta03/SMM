@@ -11,7 +11,15 @@ jobs:
       
     runs-on: ubuntu-20.04
     name: Go ${{ matrix.go }} Tests
-    
+
+    env:
+      TOKEN: ${{ secrets.TOKEN }}
+      OWNER: ${{ secrets.OWNER }}
+      STAGE: "test"
+      NODE: "issue-test"
+      EMPTY: "jdf"
+      NVMRC_ONLY: "nvmrc_only"
+
     steps:
     - uses: actions/checkout@v3
 
@@ -21,11 +29,8 @@ jobs:
         go-version: ${{ matrix.go }}
 
     - name: Run tests
-      env:
-        TOKEN: ${{ secrets.TOKEN }}
-        OWNER: ${{ secrets.OWNER }}
-        STAGE: "test"
-        NODE: "issue-test"
-        EMPTY:
-          
       run: go test -v ./...
+
+    - name: Run Coverage
+      run: go test -v -cover ./...
+

@@ -7,6 +7,7 @@ import (
 	"cuddly-eureka-/types"
 	"cuddly-eureka-/util"
 	"fmt"
+	"regexp"
 	"strings"
 )
 
@@ -16,6 +17,17 @@ type NodeEOL struct {
 func extractVersionFromDotXString(dotxNotation string) string {
 	split := strings.Split(dotxNotation, ".")
 	return split[0]
+}
+
+func extractNodeVersionFromNVMRC(nvm string) string {
+	/**
+	Examples of representation:
+		- v14.15.0
+		- 14.15.0
+	*/
+	re := regexp.MustCompile("^v")
+	n := re.ReplaceAllString(strings.TrimSpace(nvm), "")
+	return strings.Split(n, ".")[0]
 }
 
 // checkVersionFromEngines checks for "engines" attribute inside package.json and sends
@@ -38,7 +50,17 @@ func checkVersionFromEngines(packageJson github.PackageJson) (*string, bool) {
 	return nil, false
 }
 
-func checkVersionFromRCFile() (*string, bool) {
+func checkVersionFromRCFile(g *github.GitHub, repoName, githubOwner string) (*string, bool) {
+	nvmrc, err := g.GetDotNVMRC(repoName, githubOwner)
+	if err != nil {
+		fmt.Printf("Failed to read .nvmrc for %s\n", repoName)
+		return nil, false
+	}
+
+	version := extractNodeVersionFromNVMRC(*nvmrc)
+	if version != "" {
+		return &version, true
+	}
 	return nil, false
 }
 
@@ -74,7 +96,10 @@ func (node NodeEOL) Check(repoName string) types.MaturityCheck {
 
 	// 2 - Check .nvmrc
 	if existingVersion == nil {
-
+		versionFromNVMRC, foundFromNVMRC := checkVersionFromRCFile(g, repoName, app.GitHubOwner)
+		if foundFromNVMRC {
+			existingVersion = versionFromNVMRC
+		}
 	}
 
 	if existingVersion != nil {

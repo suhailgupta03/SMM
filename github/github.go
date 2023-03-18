@@ -18,7 +18,8 @@ type GitHubActions interface {
 }
 
 type RepositoryActions interface {
-	GetPackageJSON(repoName, owner string) (map[string]interface{}, error)
+	GetPackageJSON(repoName, owner string) (PackageJson, error)
+	GetDotNVMRC(repoName, owner string) (*string, error)
 }
 
 type RepoLanguageDetails struct {
@@ -147,4 +148,14 @@ func (g *GitHub) GetPackageJSON(repoName, owner string) (PackageJson, error) {
 		json.Unmarshal([]byte(*content), &jsonMap)
 		return jsonMap, nil
 	}
+}
+
+// GetDotNVMRC returns the content of the .nvmrc file from the given
+// repo name
+func (g *GitHub) GetDotNVMRC(repoName, owner string) (*string, error) {
+	content, err := g.GetRepoContent(repoName, owner, ".nvmrc")
+	if err != nil {
+		return nil, err
+	}
+	return content, nil
 }

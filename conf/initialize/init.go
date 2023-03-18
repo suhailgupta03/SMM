@@ -35,6 +35,7 @@ func getFromEnv() appconstants.Constants {
 	if isStageTest(os.Getenv("STAGE")) {
 		test.Repo.Node = os.Getenv("NODE")
 		test.Repo.Empty = os.Getenv("EMPTY")
+		test.Repo.NVMRC = os.Getenv("NVMRC_ONLY")
 		stage = "test"
 	} else {
 		test = nil
