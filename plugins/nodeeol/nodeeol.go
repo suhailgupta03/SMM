@@ -15,7 +15,7 @@ type NodeEOL struct {
 }
 
 func extractVersionFromDotXString(dotxNotation string) string {
-	split := strings.Split(dotxNotation, ".")
+	split := strings.Split(strings.TrimSpace(dotxNotation), ".")
 	return split[0]
 }
 
@@ -27,11 +27,12 @@ func extractNodeVersionFromNVMRC(nvm string) string {
 	*/
 	re := regexp.MustCompile("^v")
 	n := re.ReplaceAllString(strings.TrimSpace(nvm), "")
-	return strings.Split(n, ".")[0]
+	return extractVersionFromDotXString(n)
 }
 
 // checkVersionFromEngines checks for "engines" attribute inside package.json and sends
-// the mapped nodejs version
+// the mapped nodejs version. If the version in the package.json is "14.4.5", the method
+// will return "14". Returns false, if the version was not found
 func checkVersionFromEngines(packageJson github.PackageJson) (*string, bool) {
 	/**
 	Example:
@@ -67,7 +68,7 @@ func checkVersionFromRCFile(g *github.GitHub, repoName, githubOwner string) (*st
 func checkVersionFromPackageJson(g *github.GitHub, repoName, gitHubOwner string) (*string, bool) {
 	packageJson, err := g.GetPackageJSON(repoName, gitHubOwner)
 	if err != nil {
-		fmt.Printf("Failed to read package.json for %s\n", repoName)
+		fmt.Printf("Warning: Failed to read package.json for %s\n", repoName)
 		return nil, false
 	}
 
