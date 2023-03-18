@@ -3,9 +3,8 @@ package initialize
 import (
 	"cuddly-eureka-/appconstants"
 	"cuddly-eureka-/conf/toml"
-	"cuddly-eureka-/util"
-	"fmt"
 	"os"
+	"strings"
 )
 
 func config() (toml.RawConfig, error) {
@@ -22,19 +21,29 @@ func config() (toml.RawConfig, error) {
 	return c, cErr
 }
 
-// Constants returns configuration structure, prioritizing variables in
-// .toml file over .env
-func getFromConfig(config toml.RawConfig) appconstants.Constants {
-	return appconstants.Constants{
-		GitHubToken: util.GetOR(config["TOKEN"].(string), os.Getenv("TOKEN")),
-		GitHubOwner: util.GetOR(config["OWNER"].(string), os.Getenv("OWNER")),
+func isStageTest(stage string) bool {
+	if strings.ToLower(strings.TrimSpace(stage)) == "test" {
+		return true
+	} else {
+		return false
 	}
 }
 
 func getFromEnv() appconstants.Constants {
+	test := new(appconstants.TestConstants)
+	stage := ""
+	if isStageTest(os.Getenv("STAGE")) {
+		test.Repo.Node = os.Getenv("NODE")
+		test.Repo.Empty = os.Getenv("EMPTY")
+		stage = "test"
+	} else {
+		test = nil
+	}
 	return appconstants.Constants{
+		Stage:       stage,
 		GitHubToken: os.Getenv("TOKEN"),
 		GitHubOwner: os.Getenv("OWNER"),
+		Test:        test,
 	}
 }
 
@@ -42,10 +51,10 @@ func getFromEnv() appconstants.Constants {
 // variables. If it fails to find conf.toml, it checks the ENV to find
 // the matching variables
 func GetAppConstants() appconstants.Constants {
-	conf, err := config()
-	if err != nil {
-		fmt.Println("Warning: Failed to read the configuration file. " + err.Error())
-		return getFromEnv()
-	}
-	return getFromConfig(conf)
+	//conf, err := config()
+	//if err != nil {
+	//	fmt.Println("Warning: Failed to read the configuration file. " + err.Error())
+	//	return getFromEnv()
+	//}
+	return getFromEnv()
 }

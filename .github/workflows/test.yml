@@ -24,4 +24,8 @@ jobs:
       env:
         TOKEN: ${{ secrets.TOKEN }}
         OWNER: ${{ secrets.OWNER }}
+        STAGE: "test"
+        NODE: "issue-test"
+        EMPTY:
+          
       run: go test -v ./...

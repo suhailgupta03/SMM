@@ -41,24 +41,23 @@ with the same underlying type `MaturityCheck` but adds new methods
 to check the EOL of the stack.
 
 ### Working with the configuration variables
-
-There are two ways by which configuration values could be passed.
-* Updating the values in `conf.toml`
-* Exporting the values in the current shell that will execute the program. This can be done as follows
+To export the environment variables, run
 ```shell
-export TOKEN="MYTOKEN"
-export OWNER="GITHUB_USERNAME"
-export FOO="BAR"
+source test.env
 ```
 
-Values from `conf.toml` will be prioritized over values exported
-from the executing shell. The snippet from [init.go](conf/initialize/init.go)
-shows the handling of configuration variables.
-```go
-util.GetOR(config["TOKEN"].(string), os.Getenv("TOKEN"))
+`test.env` will have variables as shown below exported to the shell running the code
+
+```shell
+export STAGE=test
+export TOKEN=
+export OWNER=
+export NODE=issue-test
+export EMPTY=
 ```
 
 ### Running the test cases
+Once the variables have been exported, the tests could be run as follows
 ```shell
 go test -v ./...
 ```
@@ -66,5 +65,3 @@ To also print the code coverage use the following command
 ```shell
 go test -v ./... -cover
 ```
-
-_Note: If you are not exporting env variables through shell, you'll need to copy conf.toml inside the PLUGIN_NAME directory to see if GitHub dependent plugin test cases are passing_

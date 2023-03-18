@@ -6,4 +6,5 @@ do
 
 done
 
+source test.env
 go run runner.go depchecker.go
