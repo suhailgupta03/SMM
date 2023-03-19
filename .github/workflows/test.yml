@@ -19,6 +19,7 @@ jobs:
       NODE: "issue-test"
       EMPTY: "jdf"
       NVMRC_ONLY: "nvmrc_only"
+      DJANGO: "virality"
 
     steps:
     - uses: actions/checkout@v3

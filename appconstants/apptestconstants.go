@@ -5,7 +5,8 @@ type TestConstants struct {
 }
 
 type TestRepos struct {
-	Node  string
-	NVMRC string
-	Empty string
+	Node   string
+	NVMRC  string
+	Django string
+	Empty  string
 }

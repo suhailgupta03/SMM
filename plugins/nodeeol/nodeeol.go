@@ -104,12 +104,8 @@ func (node NodeEOL) Check(repoName string) types.MaturityCheck {
 	}
 
 	if existingVersion != nil {
-		matchingVersionDetails := util.FindMatchingVersion(*existingVersion, eolDetails)
-		if util.IsVersionEOL(*existingVersion, matchingVersionDetails) {
-			return types.Yes
-		} else {
-			return types.No
-		}
+		eolValue := util.CheckEOL(*existingVersion, eolDetails)
+		return eolValue
 	}
 
 	return types.NA

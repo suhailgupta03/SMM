@@ -36,6 +36,7 @@ func getFromEnv() appconstants.Constants {
 		test.Repo.Node = os.Getenv("NODE")
 		test.Repo.Empty = os.Getenv("EMPTY")
 		test.Repo.NVMRC = os.Getenv("NVMRC_ONLY")
+		test.Repo.Django = os.Getenv("DJANGO")
 		stage = "test"
 	} else {
 		test = nil

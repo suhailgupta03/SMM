@@ -6,6 +6,9 @@ To generate the `.so` files and run the code, execute the following script
 ./build_run.sh
 ```
 
+### Available Plugins
+* [NODE EOL](plugins/nodeeol/nodeeol.go)
+* [DJANGO EOL](plugins/djangoeol/djangoeol.go)
 
 ### To Create a New Plugin
 - Create a new directory inside `plugins` directory

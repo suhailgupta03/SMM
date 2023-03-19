@@ -20,6 +20,7 @@ type GitHubActions interface {
 type RepositoryActions interface {
 	GetPackageJSON(repoName, owner string) (PackageJson, error)
 	GetDotNVMRC(repoName, owner string) (*string, error)
+	GetRequirementsTxt(repoName, owner string) (*string, error)
 }
 
 type RepoLanguageDetails struct {
@@ -154,6 +155,15 @@ func (g *GitHub) GetPackageJSON(repoName, owner string) (PackageJson, error) {
 // repo name
 func (g *GitHub) GetDotNVMRC(repoName, owner string) (*string, error) {
 	content, err := g.GetRepoContent(repoName, owner, ".nvmrc")
+	if err != nil {
+		return nil, err
+	}
+	return content, nil
+}
+
+// GetRequirementsTxt fetches the requirements.txt file from the given repo name
+func (g *GitHub) GetRequirementsTxt(repoName, owner string) (*string, error) {
+	content, err := g.GetRepoContent(repoName, owner, "requirements.txt")
 	if err != nil {
 		return nil, err
 	}
