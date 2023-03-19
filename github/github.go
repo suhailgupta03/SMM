@@ -18,7 +18,7 @@ type GitHubActions interface {
 }
 
 type RepositoryActions interface {
-	GetPackageJSON(repoName, owner string) (PackageJson, error)
+	GetPackageJSON(repoName, owner string) (util.PackageJson, error)
 	GetDotNVMRC(repoName, owner string) (*string, error)
 	GetRequirementsTxt(repoName, owner string) (*string, error)
 }
@@ -138,14 +138,12 @@ func (g *GitHub) GetRepoContent(repoName, owner, filename string) (*string, erro
 	}
 }
 
-type PackageJson map[string]interface{}
-
-func (g *GitHub) GetPackageJSON(repoName, owner string) (PackageJson, error) {
+func (g *GitHub) GetPackageJSON(repoName, owner string) (util.PackageJson, error) {
 	content, err := g.GetRepoContent(repoName, owner, "package.json")
 	if err != nil {
 		return nil, err
 	} else {
-		var jsonMap PackageJson
+		var jsonMap util.PackageJson
 		json.Unmarshal([]byte(*content), &jsonMap)
 		return jsonMap, nil
 	}

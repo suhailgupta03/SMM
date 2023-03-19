@@ -2,8 +2,8 @@ package main
 
 import (
 	"cuddly-eureka-/conf/initialize"
-	"cuddly-eureka-/github"
 	"cuddly-eureka-/types"
+	"cuddly-eureka-/util"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -53,7 +53,7 @@ func TestNodeEOL_Check5(t *testing.T) {
 }
 
 func TestNodeEOL_Check6(t *testing.T) {
-	packageJson := github.PackageJson{
+	packageJson := util.PackageJson{
 		"name":        "foo-bar",
 		"version":     "1.0.0",
 		"description": "",
@@ -66,7 +66,7 @@ func TestNodeEOL_Check6(t *testing.T) {
 	assert.True(t, found, "Should be able to find the nodejs version from package.json")
 	assert.Equal(t, "15", *version)
 
-	packageJson = github.PackageJson{
+	packageJson = util.PackageJson{
 		"name":        "foo-bar",
 		"version":     "1.0.0",
 		"description": "",

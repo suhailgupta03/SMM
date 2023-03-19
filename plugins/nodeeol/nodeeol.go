@@ -33,7 +33,7 @@ func extractNodeVersionFromNVMRC(nvm string) string {
 // checkVersionFromEngines checks for "engines" attribute inside package.json and sends
 // the mapped nodejs version. If the version in the package.json is "14.4.5", the method
 // will return "14". Returns false, if the version was not found
-func checkVersionFromEngines(packageJson github.PackageJson) (*string, bool) {
+func checkVersionFromEngines(packageJson util.PackageJson) (*string, bool) {
 	/**
 	Example:
 	  "engines": {

@@ -1,4 +1,4 @@
-PLUGINS=("djangoeol" "nodeeol" "pythoneol")
+PLUGINS=("djangoeol" "nodeeol" "pythoneol" "reacteol")
 for plugin in "${PLUGINS[@]}"
 do
   go build -buildmode=plugin -o plugins/"$plugin"/"$plugin".so plugins/"$plugin"/"$plugin".go

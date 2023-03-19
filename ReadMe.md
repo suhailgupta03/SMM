@@ -9,6 +9,7 @@ To generate the `.so` files and run the code, execute the following script
 ### Available Plugins
 * [NODE EOL](plugins/nodeeol/nodeeol.go)
 * [DJANGO EOL](plugins/djangoeol/djangoeol.go)
+* [REACT_EOL](plugins/reacteol/reacteol.go)
 
 ### To Create a New Plugin
 - Create a new directory inside `plugins` directory
