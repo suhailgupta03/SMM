@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/google/go-github/v50/github"
 	"golang.org/x/oauth2"
+	"strings"
 )
 
 type GitHubActions interface {
@@ -21,6 +22,7 @@ type RepositoryActions interface {
 	GetPackageJSON(repoName, owner string) (util.PackageJson, error)
 	GetDotNVMRC(repoName, owner string) (*string, error)
 	GetRequirementsTxt(repoName, owner string) (*string, error)
+	DoesReadMeExist(repoName, owner string) (*bool, error)
 }
 
 type RepoLanguageDetails struct {
@@ -166,4 +168,29 @@ func (g *GitHub) GetRequirementsTxt(repoName, owner string) (*string, error) {
 		return nil, err
 	}
 	return content, nil
+}
+
+func (g *GitHub) DoesReadMeExist(repoName, owner string) (*bool, error) {
+	content, response, err := g.client.Repositories.GetReadme(g.ctx, owner, repoName, nil)
+	exists := false
+
+	if err != nil {
+		if response.StatusCode == 404 {
+			return &exists, nil
+		}
+		return nil, err
+	}
+
+	readmeContent, readMeErr := content.GetContent()
+	if readMeErr != nil {
+		return nil, readMeErr
+	}
+	readmeContent = strings.TrimSpace(readmeContent)
+
+	if len(readmeContent) > 0 {
+		exists = true
+		return &exists, nil
+	}
+
+	return &exists, nil
 }
