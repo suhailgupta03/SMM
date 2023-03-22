@@ -11,6 +11,7 @@ To generate the `.so` files and run the code, execute the following script
 * [DJANGO EOL](plugins/djangoeol/djangoeol.go)
 * [REACT EOL](plugins/reacteol/reacteol.go)
 * [README](plugins/readme/readme.go)
+* [PYTHON EOL](plugins/pythoneol/pythoneol.go)
 
 ### To Create a New Plugin
 - Create a new directory inside `plugins` directory

@@ -23,6 +23,7 @@ type RepositoryActions interface {
 	GetDotNVMRC(repoName, owner string) (*string, error)
 	GetRequirementsTxt(repoName, owner string) (*string, error)
 	DoesReadMeExist(repoName, owner string) (*bool, error)
+	GetDockerFile(repoName, owner string) (*string, error)
 }
 
 type RepoLanguageDetails struct {
@@ -193,4 +194,13 @@ func (g *GitHub) DoesReadMeExist(repoName, owner string) (*bool, error) {
 	}
 
 	return &exists, nil
+}
+
+func (g *GitHub) GetDockerFile(repoName, owner string) (*string, error) {
+	content, err := g.GetRepoContent(repoName, owner, "Dockerfile")
+	if err != nil {
+		return nil, err
+	}
+
+	return content, nil
 }

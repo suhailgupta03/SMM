@@ -65,3 +65,23 @@ func TestGetVersionFromPackageJSON(t *testing.T) {
 	version = GetVersionFromPackageJSON(PackageJson{}, "react")
 	assert.Nil(t, version)
 }
+
+func TestParseDockerFileFromCommand(t *testing.T) {
+	dockerFile := `FROM python:3.10.2-slim
+					ENV PYTHONDONTWRITEBYTECODE=1
+					ENV PYTHONUNBUFFERED=1
+					COPY requirements.txt /
+					RUN pip install -r /requirements.txt
+					COPY . /src/
+					WORKDIR /src/integrations
+					EXPOSE 8000
+					ENTRYPOINT ["/src/entrypoint.sh"]`
+
+	commands := ParseDockerFileFromCommand(dockerFile)
+	assert.Len(t, commands, 1)
+	assert.Equal(t, "python", *commands[0].Image)
+	assert.Equal(t, "3.10.2-slim", *commands[0].Tag)
+	assert.Nil(t, commands[0].As)
+	assert.Nil(t, commands[0].Platform)
+	assert.Nil(t, commands[0].Digest)
+}

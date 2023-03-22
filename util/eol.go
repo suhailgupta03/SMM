@@ -3,6 +3,7 @@ package util
 import (
 	"cuddly-eureka-/http"
 	"cuddly-eureka-/types"
+	"fmt"
 	"reflect"
 	"regexp"
 	"time"
@@ -12,6 +13,28 @@ func getVersionWithRTrimmedDots(version string) string {
 	re := regexp.MustCompile(`\.\d+$`)
 	versionWithTrimmedDots := re.ReplaceAllString(version, "")
 	return versionWithTrimmedDots
+}
+
+/*
+*
+normalizeVersionString removes :
+  - leading characters to make sure that the version always starts with a number
+  - training characters to make sure that the version always ends with a number
+  - trims any leading or trailing white space in the version string
+*/
+func normalizeVersionString(version string) string {
+	re := regexp.MustCompile(`(?m)(\d+\.?)`)
+	vGroups := re.FindAllStringSubmatch(version, -1)
+	norm := ""
+	if len(vGroups) > 0 {
+		for _, group := range vGroups {
+			if len(group[1]) > 0 {
+				norm += group[1]
+			}
+		}
+	}
+
+	return norm
 }
 
 // findMatchingVersion find the details of the product matching the passed version. Currently,
@@ -51,12 +74,14 @@ func isVersionEOL(versionToCheck string, eolDetails http.ProductEOLDetails) bool
 		}
 		return false
 	} else {
+		fmt.Println(eolDetails.Cycle, "..", versionToCheck, "..", versionWithTrimmedDots)
 		panic("Version to check does not match with the provided EOL details")
 	}
 }
 
 func CheckEOL(versionToFind string, eolList []http.ProductEOLDetails) types.MaturityCheck {
-	matchingVersionDetails := findMatchingVersion(versionToFind, eolList)
+	versionToFind = normalizeVersionString(versionToFind)
+	matchingVersionDetails := findMatchingVersion(normalizeVersionString(versionToFind), eolList)
 	if isVersionEOL(versionToFind, matchingVersionDetails) {
 		return types.Yes
 	} else {
