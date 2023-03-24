@@ -26,7 +26,7 @@ func getRepos(token string, owner string) []github.RepoLanguageDetails {
 	}
 	fmt.Printf("Fetched %d repos for %s\n", len(repoNames), owner)
 	repoLanguageDetails := g.GetRepoLanguages(repoNames, owner)
-	return repoLanguageDetails[0:1]
+	return repoLanguageDetails
 }
 
 func write(data [][]string, repoName string) {
