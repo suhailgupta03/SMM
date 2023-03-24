@@ -54,7 +54,7 @@ func checkVersionFromEngines(packageJson util.PackageJson) (*string, bool) {
 func checkVersionFromRCFile(g *github.GitHub, repoName, githubOwner string) (*string, bool) {
 	nvmrc, err := g.GetDotNVMRC(repoName, githubOwner)
 	if err != nil {
-		fmt.Printf("Failed to read .nvmrc for %s\n", repoName)
+		fmt.Printf("Warning: Failed to read .nvmrc for %s\n", repoName)
 		return nil, false
 	}
 

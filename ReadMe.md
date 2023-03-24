@@ -13,6 +13,14 @@ To generate the `.so` files and run the code, execute the following script
 * [README](plugins/readme/readme.go)
 * [PYTHON EOL](plugins/pythoneol/pythoneol.go)
 
+### Description of Maturity Values
+[MaturityValues](types/commontypes.go) are defined here.
+
+| 1   | YES | EOL / FOUND         | 
+|-----|-----|---------------------|
+| 2   | NO  | NOT EOL / NOT FOUND |
+| 0   | NA  | -                   |
+
 ### To Create a New Plugin
 - Create a new directory inside `plugins` directory
 - Implement `Check` as defined in [types/commontypes.go](./types/commontypes.go)

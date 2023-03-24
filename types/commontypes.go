@@ -4,9 +4,9 @@ type MaturityCheck int
 
 // Reference: https://go.dev/ref/spec#Iota
 const (
-	Yes MaturityCheck = iota
+	NA MaturityCheck = iota
+	Yes
 	No
-	NA
 )
 
 type Maturity interface {

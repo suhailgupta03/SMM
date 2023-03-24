@@ -4,11 +4,13 @@ import (
 	"cuddly-eureka-/appconstants"
 	"cuddly-eureka-/conf/initialize"
 	"cuddly-eureka-/github"
+	"cuddly-eureka-/output/csv"
 	"cuddly-eureka-/types"
 	"fmt"
 	"os"
 	"path/filepath"
 	"plugin"
+	"strconv"
 )
 
 var (
@@ -24,7 +26,13 @@ func getRepos(token string, owner string) []github.RepoLanguageDetails {
 	}
 	fmt.Printf("Fetched %d repos for %s\n", len(repoNames), owner)
 	repoLanguageDetails := g.GetRepoLanguages(repoNames, owner)
-	return repoLanguageDetails
+	return repoLanguageDetails[0:1]
+}
+
+func write(data [][]string, repoName string) {
+	headers := make([]string, 0)
+	headers = append(headers, "plugin", "maturity")
+	csv.Generate(headers, data, repoName+"_out.csv")
 }
 
 func main() {
@@ -36,7 +44,9 @@ func main() {
 	repos := getRepos(appConstants.GitHubToken, appConstants.GitHubOwner)
 
 	for _, repo := range repos {
+		repoMaturityValues := make([][]string, 0)
 		for _, e := range entries {
+			pluginResult := make([]string, 0)
 			/**
 			Load all the plugins and run for each repo
 			*/
@@ -62,11 +72,9 @@ func main() {
 			new type which is distinct but derives from the ProductVersion
 			*/
 			maturityValue := maturity.Check(repo.Name)
-			//
-			//maturityCheck := ExtendedMaturityCheck(maturityValue)
-			//maturityCheck.Print(repo.Name, pluginDirName, maturityValue)
-			fmt.Println("========", maturityValue)
+			pluginResult = append(pluginResult, pluginDirName, strconv.Itoa(int(maturityValue)))
+			repoMaturityValues = append(repoMaturityValues, pluginResult)
 		}
-
+		write(repoMaturityValues, repo.Name)
 	}
 }
