@@ -1,4 +1,5 @@
 [![Run Tests](https://github.com/suhailgupta03/cuddly-eureka-/actions/workflows/test.yml/badge.svg)](https://github.com/suhailgupta03/cuddly-eureka-/actions/workflows/test.yml)
+[![codecov](https://codecov.io/gh/suhailgupta03/cuddly-eureka-/branch/main/graph/badge.svg?token=tNKcOjlxLo)](https://codecov.io/gh/suhailgupta03/cuddly-eureka-)
 
 ### Generate .so Files and Run Code
 To generate the `.so` files and run the code, execute the following script
