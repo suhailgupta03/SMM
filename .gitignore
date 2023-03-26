@@ -1,2 +1,3 @@
 *.so
 *_out.csv
+coverage.txt
