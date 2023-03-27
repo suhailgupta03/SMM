@@ -26,13 +26,15 @@ func getRepos(token string, owner string) []github.RepoLanguageDetails {
 	}
 	fmt.Printf("Fetched %d repos for %s\n", len(repoNames), owner)
 	repoLanguageDetails := g.GetRepoLanguages(repoNames, owner)
-	return repoLanguageDetails
+	return repoLanguageDetails[0:1]
 }
 
 func write(data [][]string, repoName string) {
 	headers := make([]string, 0)
 	headers = append(headers, "plugin", "maturity")
-	csv.Generate(headers, data, repoName+"_out.csv")
+	filename := repoName + "_out.csv"
+	csv.Generate(headers, data, filename)
+	fmt.Printf("Generated %s 📝\n", filename)
 }
 
 func main() {

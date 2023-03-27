@@ -18,10 +18,10 @@ func TestIsVersionEOL(t *testing.T) {
 	assert.True(t, isVersionEOL)
 
 	eolValue := CheckEOL("10", eolDetails)
-	assert.Equal(t, types.Yes, eolValue)
+	assert.Equal(t, types.MaturityValue1, eolValue)
 
 	eolValue = CheckEOL("10.2-xyz", eolDetails)
-	assert.Equal(t, types.Yes, eolValue)
+	assert.Equal(t, types.MaturityValue1, eolValue)
 
 	/**
 	Sample response for django
@@ -42,12 +42,12 @@ func TestIsVersionEOL(t *testing.T) {
 	assert.Equal(t, "3.2", versionDetails.Cycle)
 
 	eolValue = CheckEOL("3.2.15", eolDetails)
-	assert.Equal(t, types.No, eolValue)
+	assert.Equal(t, types.MaturityValue2, eolValue)
 
 	eolDetails, err = http.EOLProvider(http.EOLPython)
 	assert.Nil(t, err)
 	eolValue = CheckEOL("3.10.2-slim", eolDetails)
-	assert.Equal(t, types.No, eolValue)
+	assert.Equal(t, types.MaturityValue2, eolValue)
 }
 
 func TestCheckNormalizeString(t *testing.T) {

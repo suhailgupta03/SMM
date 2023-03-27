@@ -9,4 +9,5 @@ type TestRepos struct {
 	NVMRC  string
 	Django string
 	Empty  string
+	Trivy  string
 }
