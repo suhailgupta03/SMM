@@ -30,6 +30,11 @@ jobs:
       with:
         go-version: ${{ matrix.go }}
 
+    - name: Install Trivy
+      run: |
+        wget https://github.com/aquasecurity/trivy/releases/download/v0.38.3/trivy_0.38.3_Linux-64bit.deb
+        sudo dpkg -i trivy_0.38.3_Linux-64bit.deb
+
     - name: Run tests
       run: go test -v ./...
 
