@@ -20,12 +20,12 @@ func (r *ReadMe) Check(repoName string) types.MaturityCheck {
 		fmt.Printf("Warning: Failed to check for the existence of readme for repo %s\n", repoName)
 	} else {
 		if *exists {
-			return types.Yes
+			return types.MaturityValue1
 		} else {
-			return types.No
+			return types.MaturityValue2
 		}
 	}
-	return types.NA
+	return types.MaturityValue0
 }
 
 var Check ReadMe

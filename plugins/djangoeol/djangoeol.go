@@ -46,7 +46,7 @@ func (django DjangoEOL) Check(repoName string) types.MaturityCheck {
 		eolValue := util.CheckEOL(*existingVersion, eolDetails)
 		return eolValue
 	}
-	return types.NA
+	return types.MaturityValue0
 }
 
 var Check DjangoEOL

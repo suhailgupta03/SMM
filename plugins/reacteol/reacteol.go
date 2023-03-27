@@ -48,7 +48,7 @@ func (react *ReactEOL) Check(repoName string) types.MaturityCheck {
 		return eolValue
 	}
 
-	return types.NA
+	return types.MaturityValue0
 }
 
 var Check ReactEOL

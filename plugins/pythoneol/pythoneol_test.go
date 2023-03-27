@@ -12,7 +12,7 @@ func TestPythonEOL_Check(t *testing.T) {
 	python := new(PythonEOL)
 	app := initialize.GetAppConstants()
 	mcheck := python.Check(app.Test.Repo.Django)
-	assert.Equal(t, types.No, mcheck)
+	assert.Equal(t, types.MaturityValue2, mcheck)
 }
 
 func TestPythonEOL_Check2(t *testing.T) {

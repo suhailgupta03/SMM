@@ -12,7 +12,7 @@ func TestReactEOL_Check(t *testing.T) {
 	react := new(ReactEOL)
 	app := initialize.GetAppConstants()
 	mcheck := react.Check(app.Test.Repo.Node)
-	assert.Equal(t, types.No, mcheck, "Should not report EOL from package.json")
+	assert.Equal(t, types.MaturityValue2, mcheck, "Should not report EOL from package.json")
 }
 
 func TestReactEOL_Check2(t *testing.T) {

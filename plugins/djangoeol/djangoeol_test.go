@@ -12,7 +12,7 @@ func TestDjangoEOL_Check(t *testing.T) {
 	django := new(DjangoEOL)
 	app := initialize.GetAppConstants()
 	mcheck := django.Check(app.Test.Repo.Django)
-	assert.Equal(t, types.No, mcheck, "Should not report EOL for django")
+	assert.Equal(t, types.MaturityValue2, mcheck, "Should not report EOL for django")
 }
 
 func TestDjangoEOL_Check2(t *testing.T) {

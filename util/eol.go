@@ -83,8 +83,8 @@ func CheckEOL(versionToFind string, eolList []http.ProductEOLDetails) types.Matu
 	versionToFind = normalizeVersionString(versionToFind)
 	matchingVersionDetails := findMatchingVersion(normalizeVersionString(versionToFind), eolList)
 	if isVersionEOL(versionToFind, matchingVersionDetails) {
-		return types.Yes
+		return types.MaturityValue1
 	} else {
-		return types.No
+		return types.MaturityValue2
 	}
 }

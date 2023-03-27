@@ -20,6 +20,7 @@ jobs:
       EMPTY: "jdf"
       NVMRC_ONLY: "nvmrc_only"
       DJANGO: "virality"
+      TRIVYREPO: "virality"
 
     steps:
     - uses: actions/checkout@v3
