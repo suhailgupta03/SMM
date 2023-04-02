@@ -111,6 +111,42 @@ func TestParseCriticalVul(t *testing.T) {
 	assert.False(t, *exists)
 	assert.Nil(t, totalVul)
 
+	trivyResponse6 := `
+		671713600867.dkr.ecr.ap-south-1.amazonaws.com/smm (debian 11.6)
+		
+		Total: 8 (CRITICAL: 8)
+		
+		┌──────────────────────┬────────────────┬──────────┬────────────────────┬───────────────┬──────────────────────────────────────────────────────────────┐
+		│       Library        │ Vulnerability  │ Severity │ Installed Version  │ Fixed Version │                            Title                             │
+		├──────────────────────┼────────────────┼──────────┼────────────────────┼───────────────┼──────────────────────────────────────────────────────────────┤
+		│ curl                 │ CVE-2023-23914 │ CRITICAL │ 7.74.0-1.3+deb11u7 │               │ curl: HSTS ignored on multiple requests                      │
+		│                      │                │          │                    │               │ https://avd.aquasec.com/nvd/cve-2023-23914                   │
+		├──────────────────────┤                │          │                    ├───────────────┤                                                              │
+		│ libcurl3-gnutls      │                │          │                    │               │                                                              │
+		│                      │                │          │                    │               │                                                              │
+		├──────────────────────┤                │          │                    ├───────────────┤                                                              │
+		│ libcurl4             │                │          │                    │               │                                                              │
+		│                      │                │          │                    │               │                                                              │
+		├──────────────────────┼────────────────┤          ├────────────────────┼───────────────┼──────────────────────────────────────────────────────────────┤
+		│ libdb5.3             │ CVE-2019-8457  │          │ 5.3.28+dfsg1-0.8   │               │ sqlite: heap out-of-bound read in function rtreenode()       │
+		│                      │                │          │                    │               │ https://avd.aquasec.com/nvd/cve-2019-8457                    │
+		├──────────────────────┼────────────────┤          ├────────────────────┼───────────────┼──────────────────────────────────────────────────────────────┤
+		│ libpython3.9-minimal │ CVE-2021-29921 │          │ 3.9.2-1            │               │ python-ipaddress: Improper input validation of octal strings │
+		│                      │                │          │                    │               │ https://avd.aquasec.com/nvd/cve-2021-29921                   │
+		├──────────────────────┤                │          │                    ├───────────────┤                                                              │
+		│ libpython3.9-stdlib  │                │          │                    │               │                                                              │
+		│                      │                │          │                    │               │                                                              │
+		├──────────────────────┤                │          │                    ├───────────────┤                                                              │
+		│ python3.9            │                │          │                    │               │                                                              │
+		│                      │                │          │                    │               │                                                              │
+		├──────────────────────┤                │          │                    ├───────────────┤                                                              │
+		│ python3.9-minimal    │                │          │                    │               │                                                              │
+		│                      │                │          │                    │               │                                                              │
+		└──────────────────────┴────────────────┴──────────┴────────────────────┴───────────────┴──────────────────────────────────────────────────────────────┘
+	`
+	exists, totalVul = parseCriticalVul(trivyResponse6)
+	assert.True(t, *exists)
+	assert.Equal(t, 8, *totalVul)
 }
 
 func TestIsRepoVulnerable(t *testing.T) {
@@ -125,4 +161,10 @@ func TestIsRepoVulnerable(t *testing.T) {
 	assert.Nil(t, isVul)
 	assert.NotNil(t, err)
 	assert.ErrorContains(t, err, "exit status 1")
+}
+
+func TestIsImageVulnerable(t *testing.T) {
+	isVul, err := IsImageVulnerable("python:3.4-alpine")
+	assert.True(t, *isVul)
+	assert.Nil(t, err)
 }

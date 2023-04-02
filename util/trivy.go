@@ -46,6 +46,7 @@ func parseCriticalVul(trivyResponse string) (*bool, *int) {
 
 	return &exists, numberOf
 }
+
 func IsRepoVulnerable(repoPath string) (*bool, error) {
 	exists, eErr := doesTrivyExist()
 	if eErr != nil {
@@ -71,4 +72,30 @@ func IsRepoVulnerable(repoPath string) (*bool, error) {
 	} else {
 		return nil, errors.New("trivy does not exist")
 	}
+}
+
+func IsImageVulnerable(imagePath string) (*bool, error) {
+	exists, eErr := doesTrivyExist()
+	if eErr != nil {
+		return nil, eErr
+	}
+
+	isVulnerable := false
+	if exists {
+		cmd := exec.Command("trivy", "image", imagePath, "-q", "-s", "CRITICAL", "-f", "table")
+		var out strings.Builder
+		cmd.Stdout = &out
+		err := cmd.Run()
+		if err != nil {
+			return nil, err
+		}
+		vulExists, _ := parseCriticalVul(out.String())
+		if *vulExists {
+			isVulnerable = true
+		}
+		return &isVulnerable, nil
+	} else {
+		return nil, errors.New("trivy does not exist")
+	}
+
 }
