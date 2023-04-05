@@ -4,8 +4,10 @@ import (
 	"cuddly-eureka-/http"
 	"cuddly-eureka-/types"
 	"fmt"
+	"github.com/hashicorp/go-version"
 	"reflect"
 	"regexp"
+	"sort"
 	"time"
 )
 
@@ -45,14 +47,28 @@ func normalizeVersionString(version string) string {
 // Note: 3.2.14 will not be matched with 3
 func findMatchingVersion(versionToFind string, eolList []http.ProductEOLDetails) http.ProductEOLDetails {
 	details := new(http.ProductEOLDetails)
+	versionList := make([]*version.Version, 0)
+
 	versionWithTrimmedDots := getVersionWithRTrimmedDots(versionToFind)
 	for _, d := range eolList {
+		currentVersion, _ := version.NewVersion(d.Cycle)
+		versionList = append(versionList, currentVersion)
 		if d.Cycle == versionToFind || d.Cycle == versionWithTrimmedDots {
 			details = &d
 			break
 		}
 	}
 
+	if len(details.Cycle) == 0 {
+		// If the release cycle was not found in the existing
+		// eolList, check if the version we are trying to filter is lower than
+		// the lowest version reported in the EOLDetails
+		sort.Sort(version.Collection(versionList))
+		vTFind, _ := version.NewVersion(versionToFind)
+		if vTFind.LessThan(versionList[0]) {
+			details.Cycle = "-1"
+		}
+	}
 	return *details
 }
 
@@ -82,9 +98,13 @@ func isVersionEOL(versionToCheck string, eolDetails http.ProductEOLDetails) bool
 func CheckEOL(versionToFind string, eolList []http.ProductEOLDetails) types.MaturityCheck {
 	versionToFind = normalizeVersionString(versionToFind)
 	matchingVersionDetails := findMatchingVersion(normalizeVersionString(versionToFind), eolList)
-	if isVersionEOL(versionToFind, matchingVersionDetails) {
-		return types.MaturityValue1
-	} else {
-		return types.MaturityValue2
+	if matchingVersionDetails.Cycle != "-1" {
+		if isVersionEOL(versionToFind, matchingVersionDetails) {
+			return types.MaturityValue1
+		} else {
+			return types.MaturityValue2
+		}
 	}
+
+	return types.MaturityValue1
 }

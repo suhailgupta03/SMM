@@ -65,6 +65,7 @@ func ParseDockerFileFromCommand(dockerFile string) []*FromCommand {
 	platformRegex := regexp.MustCompile(`(--platform=)\S+`)
 	asRegex := regexp.MustCompile(`(AS\s+)(\S+)`)
 	imageRegex := regexp.MustCompile(`(\S+:)(\S+)`)
+	imageRegexWithoutTag := regexp.MustCompile(`(^FROM\s+)(\S+)`)
 	colonRegex := regexp.MustCompile(`:$`)
 	for _, split := range dockerFileNewLineSplit {
 		split = strings.TrimSpace(split)
@@ -93,6 +94,11 @@ func ParseDockerFileFromCommand(dockerFile string) []*FromCommand {
 					iTag := iGroups[2]
 					from.Image = &iName
 					from.Tag = &iTag
+				}
+			} else if imageRegexWithoutTag.MatchString(split) {
+				iGroups := imageRegexWithoutTag.FindStringSubmatch(split)
+				if len(iGroups) == 3 {
+					from.Image = &iGroups[2]
 				}
 			}
 

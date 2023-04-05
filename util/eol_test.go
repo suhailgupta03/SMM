@@ -8,6 +8,7 @@ import (
 )
 
 func TestIsVersionEOL(t *testing.T) {
+
 	eolDetails, err := http.EOLProvider(http.EOLNode)
 	assert.Nil(t, err)
 	versionDetails := findMatchingVersion("10", eolDetails)
@@ -41,6 +42,10 @@ func TestIsVersionEOL(t *testing.T) {
 	assert.NotNil(t, versionDetails)
 	assert.Equal(t, "3.2", versionDetails.Cycle)
 
+	versionDetails = findMatchingVersion("1.9.5", eolDetails)
+	assert.NotNil(t, versionDetails)
+	assert.Equal(t, "-1", versionDetails.Cycle)
+
 	eolValue = CheckEOL("3.2.15", eolDetails)
 	assert.Equal(t, types.MaturityValue2, eolValue)
 
@@ -48,6 +53,7 @@ func TestIsVersionEOL(t *testing.T) {
 	assert.Nil(t, err)
 	eolValue = CheckEOL("3.10.2-slim", eolDetails)
 	assert.Equal(t, types.MaturityValue2, eolValue)
+
 }
 
 func TestCheckNormalizeString(t *testing.T) {

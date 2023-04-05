@@ -21,7 +21,7 @@ func getVersionFromDockerFile(g *github.GitHub, repoName, owner string) (*string
 	// Filter out the commands where image is python
 	var pythonVersion *string = nil
 	for _, from := range fromCommands {
-		if *from.Image == "python" {
+		if from.Image != nil && *from.Image == "python" {
 			pythonVersion = from.Tag
 			// Will break as soon as we find the first version of python
 			break
