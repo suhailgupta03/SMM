@@ -49,4 +49,11 @@ func (django DjangoEOL) Check(repoName string) types.MaturityCheck {
 	return types.MaturityValue0
 }
 
+func (django DjangoEOL) Meta() types.MaturityMeta {
+	return types.MaturityMeta{
+		Type: types.MaturityTypeDependency,
+		Name: "Not EOL: Django",
+	}
+}
+
 var Check DjangoEOL

@@ -22,4 +22,11 @@ func (v *RepoVul) Check(repoName string) types.MaturityCheck {
 	}
 }
 
+func (v *RepoVul) Meta() types.MaturityMeta {
+	return types.MaturityMeta{
+		Type: types.MaturityTypeDependency,
+		Name: "No critical vulns: Dependabot",
+	}
+}
+
 var Check RepoVul

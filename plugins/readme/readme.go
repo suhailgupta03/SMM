@@ -28,4 +28,11 @@ func (r *ReadMe) Check(repoName string) types.MaturityCheck {
 	return types.MaturityValue0
 }
 
+func (r *ReadMe) Meta() types.MaturityMeta {
+	return types.MaturityMeta{
+		Type: types.MaturityTypeDocs,
+		Name: "README.markdown",
+	}
+}
+
 var Check ReadMe

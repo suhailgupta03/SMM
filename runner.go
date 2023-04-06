@@ -31,7 +31,7 @@ func getRepos(token string, owner string) []github.RepoLanguageDetails {
 
 func write(data [][]string, repoName string) {
 	headers := make([]string, 0)
-	headers = append(headers, "plugin", "maturity")
+	headers = append(headers, "Type", "Name", "Maturity Value")
 	filename := repoName + "_out.csv"
 	csv.Generate(headers, data, filename)
 	fmt.Printf("Generated %s 📝\n", filename)
@@ -74,7 +74,8 @@ func main() {
 			new type which is distinct but derives from the ProductVersion
 			*/
 			maturityValue := maturity.Check(repo.Name)
-			pluginResult = append(pluginResult, pluginDirName, strconv.Itoa(int(maturityValue)))
+			maturityMeta := maturity.Meta()
+			pluginResult = append(pluginResult, maturityMeta.Type, maturityMeta.Name, strconv.Itoa(int(maturityValue)))
 			repoMaturityValues = append(repoMaturityValues, pluginResult)
 		}
 		write(repoMaturityValues, repo.Name)

@@ -48,4 +48,11 @@ func (lpd LatestPatchDjango) Check(repoName string) types.MaturityCheck {
 	return types.MaturityValue0
 }
 
+func (lpd LatestPatchDjango) Meta() types.MaturityMeta {
+	return types.MaturityMeta{
+		Type: types.MaturityTypeDependency,
+		Name: "Uses latest patch version: Django",
+	}
+}
+
 var Check LatestPatchDjango

@@ -20,3 +20,10 @@ func TestLatestPatchNode_Check2(t *testing.T) {
 	mValue := node.Check(app.Test.Repo.NVMRC)
 	assert.Equal(t, types.MaturityValue2, mValue)
 }
+
+func TestLatestPatchNode_Meta(t *testing.T) {
+	node := new(LatestPatchNode)
+	meta := node.Meta()
+	assert.Equal(t, types.MaturityTypeDependency, meta.Type)
+	assert.Equal(t, "Uses latest patch version: Node", meta.Name)
+}

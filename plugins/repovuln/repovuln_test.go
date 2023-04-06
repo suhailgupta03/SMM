@@ -16,3 +16,10 @@ func TestRepoVul_Check(t *testing.T) {
 	mval = vplugin.Check("ISVqHDvVBRLniKZOxRxN")
 	assert.Equal(t, types.MaturityValue0, mval)
 }
+
+func TestRepoVul_Meta(t *testing.T) {
+	v := new(RepoVul)
+	meta := v.Meta()
+	assert.Equal(t, "No critical vulns: Dependabot", meta.Name)
+	assert.Equal(t, types.MaturityTypeDependency, meta.Type)
+}

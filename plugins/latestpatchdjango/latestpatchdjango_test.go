@@ -23,3 +23,10 @@ func TestLatestPatchDjango_Check2(t *testing.T) {
 	assert.True(t, found)
 	assert.Equal(t, "3.2.15", *version)
 }
+
+func TestLatestPatchDjango_Meta(t *testing.T) {
+	django := new(LatestPatchDjango)
+	meta := django.Meta()
+	assert.Equal(t, types.MaturityTypeDependency, meta.Type)
+	assert.Equal(t, "Uses latest patch version: Django", meta.Name)
+}
