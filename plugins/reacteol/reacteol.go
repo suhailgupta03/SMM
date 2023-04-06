@@ -51,4 +51,11 @@ func (react *ReactEOL) Check(repoName string) types.MaturityCheck {
 	return types.MaturityValue0
 }
 
+func (react *ReactEOL) Meta() types.MaturityMeta {
+	return types.MaturityMeta{
+		Type: types.MaturityTypeDependency,
+		Name: "Uses latest patch version: React",
+	}
+}
+
 var Check ReactEOL

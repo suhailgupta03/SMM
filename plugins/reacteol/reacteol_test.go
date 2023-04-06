@@ -23,3 +23,10 @@ func TestReactEOL_Check2(t *testing.T) {
 	assert.True(t, found)
 	assert.Equal(t, "18.2.0", *version)
 }
+
+func TestReactEOL_Meta(t *testing.T) {
+	react := new(ReactEOL)
+	meta := react.Meta()
+	assert.Equal(t, types.MaturityTypeDependency, meta.Type)
+	assert.Equal(t, "Uses latest patch version: React", meta.Name)
+}

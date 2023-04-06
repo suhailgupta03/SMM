@@ -23,4 +23,11 @@ func (lpp LatestPatchPython) Check(repoName string) types.MaturityCheck {
 	return types.MaturityValue0
 }
 
+func (lpp LatestPatchPython) Meta() types.MaturityMeta {
+	return types.MaturityMeta{
+		Type: types.MaturityTypeDependency,
+		Name: "Uses latest patch version: Python",
+	}
+}
+
 var Check LatestPatchPython

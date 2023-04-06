@@ -28,4 +28,11 @@ func (lpn LatestPatchNode) Check(repoName string) types.MaturityCheck {
 	return types.MaturityValue0
 }
 
+func (lpn LatestPatchNode) Meta() types.MaturityMeta {
+	return types.MaturityMeta{
+		Type: types.MaturityTypeDependency,
+		Name: "Uses latest patch version: Node",
+	}
+}
+
 var Check LatestPatchNode

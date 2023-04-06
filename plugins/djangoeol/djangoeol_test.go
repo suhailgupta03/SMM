@@ -23,3 +23,10 @@ func TestDjangoEOL_Check2(t *testing.T) {
 	assert.True(t, found)
 	assert.Equal(t, "3.2.15", *version)
 }
+
+func TestDjangoEOL_Meta(t *testing.T) {
+	django := new(DjangoEOL)
+	meta := django.Meta()
+	assert.Equal(t, types.MaturityTypeDependency, meta.Type)
+	assert.Equal(t, "Not EOL: Django", meta.Name)
+}

@@ -13,3 +13,10 @@ func TestLatestPatchPython_Check(t *testing.T) {
 	mValue := python.Check(app.Test.Repo.Django)
 	assert.Equal(t, types.MaturityValue1, mValue)
 }
+
+func TestLatestPatchPython_Meta(t *testing.T) {
+	python := new(LatestPatchPython)
+	meta := python.Meta()
+	assert.Equal(t, types.MaturityTypeDependency, meta.Type)
+	assert.Equal(t, "Uses latest patch version: Python", meta.Name)
+}

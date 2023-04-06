@@ -15,5 +15,11 @@ func TestReadMe_Check(t *testing.T) {
 
 	maturityValue = readme.Check(app.Test.Repo.Node) // this repo has the readme
 	assert.Equal(t, types.MaturityValue1, maturityValue)
+}
 
+func TestReadMe_Meta(t *testing.T) {
+	readme := new(ReadMe)
+	meta := readme.Meta()
+	assert.Equal(t, types.MaturityTypeDocs, meta.Type)
+	assert.Equal(t, "README.markdown", meta.Name)
 }
