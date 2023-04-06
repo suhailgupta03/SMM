@@ -8,6 +8,7 @@ import (
 	"reflect"
 	"regexp"
 	"sort"
+	"strings"
 	"time"
 )
 
@@ -95,9 +96,16 @@ func isVersionEOL(versionToCheck string, eolDetails http.ProductEOLDetails) bool
 	}
 }
 
+func isOnLatestVersionPatch(versionToCheck string, eolDetails http.ProductEOLDetails) bool {
+	if versionToCheck != eolDetails.Latest {
+		return false
+	}
+	return true
+}
+
 func CheckEOL(versionToFind string, eolList []http.ProductEOLDetails) types.MaturityCheck {
 	versionToFind = normalizeVersionString(versionToFind)
-	matchingVersionDetails := findMatchingVersion(normalizeVersionString(versionToFind), eolList)
+	matchingVersionDetails := findMatchingVersion(versionToFind, eolList)
 	if matchingVersionDetails.Cycle != "-1" {
 		if isVersionEOL(versionToFind, matchingVersionDetails) {
 			return types.MaturityValue1
@@ -107,4 +115,27 @@ func CheckEOL(versionToFind string, eolList []http.ProductEOLDetails) types.Matu
 	}
 
 	return types.MaturityValue1
+}
+
+func IsUsingLatestPatchVersion(versionToCheck string, eolList []http.ProductEOLDetails) types.MaturityCheck {
+	if len(strings.TrimSpace(versionToCheck)) == 0 {
+		return types.MaturityValue0
+	}
+
+	versionToCheck = normalizeVersionString(versionToCheck)
+	matchingVersionDetails := findMatchingVersion(versionToCheck, eolList)
+	if matchingVersionDetails.Cycle == "-1" {
+		/**
+		If the version to find does not exist with the EOLList, it most probably means that the version is too
+		old or the version does not exist. In that case, we'll simply report the software is not
+		using the latest patch version
+		*/
+		return types.MaturityValue1
+	} else {
+		if isOnLatestVersionPatch(versionToCheck, matchingVersionDetails) {
+			return types.MaturityValue2
+		} else {
+			return types.MaturityValue1
+		}
+	}
 }

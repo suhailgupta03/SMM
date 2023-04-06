@@ -72,3 +72,14 @@ func TestCheckNormalizeString(t *testing.T) {
 	version = normalizeVersionString("  1.2  ")
 	assert.Equal(t, "1.2", version)
 }
+
+func TestIsUsingLatestPatchVersion(t *testing.T) {
+	eolDetails, err := http.EOLProvider(http.EOLDjango)
+	assert.Nil(t, err)
+	mValue := IsUsingLatestPatchVersion("1.11.29", eolDetails)
+	assert.Equal(t, types.MaturityValue2, mValue)
+	mValue = IsUsingLatestPatchVersion("1.11.28", eolDetails)
+	assert.Equal(t, types.MaturityValue1, mValue)
+	mValue = IsUsingLatestPatchVersion("", eolDetails)
+	assert.Equal(t, types.MaturityValue0, mValue)
+}
