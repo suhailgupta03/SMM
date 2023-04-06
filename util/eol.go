@@ -22,12 +22,13 @@ func getVersionWithRTrimmedDots(version string) string {
 *
 normalizeVersionString removes :
   - leading characters to make sure that the version always starts with a number
-  - training characters to make sure that the version always ends with a number
+  - trailing characters to make sure that the version always ends with a number
   - trims any leading or trailing white space in the version string
 */
 func normalizeVersionString(version string) string {
 	re := regexp.MustCompile(`(?m)(\d+\.?)`)
 	vGroups := re.FindAllStringSubmatch(version, -1)
+	trailingDotRegex := regexp.MustCompile(`\.$`)
 	norm := ""
 	if len(vGroups) > 0 {
 		for _, group := range vGroups {
@@ -37,6 +38,7 @@ func normalizeVersionString(version string) string {
 		}
 	}
 
+	norm = trailingDotRegex.ReplaceAllString(norm, "")
 	return norm
 }
 
@@ -123,19 +125,16 @@ func IsUsingLatestPatchVersion(versionToCheck string, eolList []http.ProductEOLD
 	}
 
 	versionToCheck = normalizeVersionString(versionToCheck)
-	matchingVersionDetails := findMatchingVersion(versionToCheck, eolList)
-	if matchingVersionDetails.Cycle == "-1" {
-		/**
-		If the version to find does not exist with the EOLList, it most probably means that the version is too
-		old or the version does not exist. In that case, we'll simply report the software is not
-		using the latest patch version
-		*/
-		return types.MaturityValue1
-	} else {
-		if isOnLatestVersionPatch(versionToCheck, matchingVersionDetails) {
-			return types.MaturityValue2
-		} else {
-			return types.MaturityValue1
+	foundLatestPatch := false
+	for _, d := range eolList {
+		if d.Latest == versionToCheck {
+			foundLatestPatch = true
+			break
 		}
+	}
+	if foundLatestPatch {
+		return types.MaturityValue2
+	} else {
+		return types.MaturityValue1
 	}
 }

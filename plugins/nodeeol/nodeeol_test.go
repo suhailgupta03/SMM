@@ -3,7 +3,6 @@ package main
 import (
 	"cuddly-eureka-/conf/initialize"
 	"cuddly-eureka-/types"
-	"cuddly-eureka-/util"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -30,49 +29,13 @@ func TestNodeEOL_Check3(t *testing.T) {
 	assert.Equal(t, types.MaturityValue0, mcheck, "Should report MaturityValue0 type from an empty repo")
 }
 
-func TestNodeEOL_Check4(t *testing.T) {
-	version := extractVersionFromDotXString("13.3.1")
-	assert.Equal(t, "13", version)
+func TestExtractVersionFromDotString(t *testing.T) {
+	cycle := extractCycleFromDotXString("13.3.1")
+	assert.Equal(t, "13", cycle)
 
-	version = extractVersionFromDotXString("")
-	assert.Equal(t, "", version)
+	cycle = extractCycleFromDotXString("")
+	assert.Equal(t, "", cycle)
 
-	version = extractVersionFromDotXString("  ")
-	assert.Equal(t, "", version)
-}
-
-func TestNodeEOL_Check5(t *testing.T) {
-	version := extractNodeVersionFromNVMRC("v14.5.1")
-	assert.Equal(t, "14", version)
-
-	version = extractNodeVersionFromNVMRC("")
-	assert.Equal(t, "", version)
-
-	version = extractNodeVersionFromNVMRC(" ")
-	assert.Equal(t, "", version)
-}
-
-func TestNodeEOL_Check6(t *testing.T) {
-	packageJson := util.PackageJson{
-		"name":        "foo-bar",
-		"version":     "1.0.0",
-		"description": "",
-		"main":        "index.js",
-		"engines": map[string]interface{}{
-			"node": "15.4.5",
-		},
-	}
-	version, found := checkVersionFromEngines(packageJson)
-	assert.True(t, found, "Should be able to find the nodejs version from package.json")
-	assert.Equal(t, "15", *version)
-
-	packageJson = util.PackageJson{
-		"name":        "foo-bar",
-		"version":     "1.0.0",
-		"description": "",
-		"main":        "index.js",
-	}
-	version, found = checkVersionFromEngines(packageJson)
-	assert.False(t, found)
-	assert.Nil(t, version)
+	cycle = extractCycleFromDotXString("  ")
+	assert.Equal(t, "", cycle)
 }
