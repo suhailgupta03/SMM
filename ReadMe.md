@@ -19,6 +19,8 @@ To generate the `.so` files and run the code, execute the following script
   * GitHub workflow also assumes the above version
   * For the plugin to be able to scan private repositories, value to `GITHUB_TOKEN` must be provided in the shell that is executing the code. See, [test.env](./test.env) for example. This is used internally by trivy [as written in the documentation here](https://aquasecurity.github.io/trivy/v0.38/docs/target/git-repository/)
 * [LATESTPATCHDJANGO](plugins/latestpatchdjango/latestpatchdjango.go)
+* [LATESTPATCHNODE](plugins/latestpatchnode/latestpatchnode.go)
+=======
 
 ### Description of Maturity Values
 [MaturityValues](types/commontypes.go) are defined here.

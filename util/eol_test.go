@@ -71,6 +71,9 @@ func TestCheckNormalizeString(t *testing.T) {
 
 	version = normalizeVersionString("  1.2  ")
 	assert.Equal(t, "1.2", version)
+
+	version = normalizeVersionString("1.2.3.")
+	assert.Equal(t, "1.2.3", version)
 }
 
 func TestIsUsingLatestPatchVersion(t *testing.T) {
