@@ -85,4 +85,10 @@ func TestIsUsingLatestPatchVersion(t *testing.T) {
 	assert.Equal(t, types.MaturityValue1, mValue)
 	mValue = IsUsingLatestPatchVersion("", eolDetails)
 	assert.Equal(t, types.MaturityValue0, mValue)
+	eolDetails, err = http.EOLProvider(http.EOLPython)
+	assert.Nil(t, err)
+	mValue = IsUsingLatestPatchVersion("3.10.11", eolDetails)
+	assert.Equal(t, types.MaturityValue2, mValue)
+	mValue = IsUsingLatestPatchVersion("3.10.10", eolDetails)
+	assert.Equal(t, types.MaturityValue1, mValue)
 }
