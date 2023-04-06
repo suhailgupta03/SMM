@@ -86,3 +86,14 @@ func TestIsUsingLatestPatchVersion(t *testing.T) {
 	mValue = IsUsingLatestPatchVersion("", eolDetails)
 	assert.Equal(t, types.MaturityValue0, mValue)
 }
+
+func TestIsUsingLatestPatchVersion(t *testing.T) {
+	eolDetails, err := http.EOLProvider(http.EOLDjango)
+	assert.Nil(t, err)
+	mValue := IsUsingLatestPatchVersion("1.11.29", eolDetails)
+	assert.Equal(t, types.MaturityValue2, mValue)
+	mValue = IsUsingLatestPatchVersion("1.11.28", eolDetails)
+	assert.Equal(t, types.MaturityValue1, mValue)
+	mValue = IsUsingLatestPatchVersion("", eolDetails)
+	assert.Equal(t, types.MaturityValue0, mValue)
+}
