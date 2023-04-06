@@ -132,6 +132,7 @@ func IsUsingLatestPatchVersion(versionToCheck string, eolList []http.ProductEOLD
 			break
 		}
 	}
+	// TODO: Return boolean values from this function instead of returning maturity values
 	if foundLatestPatch {
 		return types.MaturityValue2
 	} else {

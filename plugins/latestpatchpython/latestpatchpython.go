@@ -1,21 +1,16 @@
 package main
 
 import (
-	"cuddly-eureka-/conf/initialize"
-	"cuddly-eureka-/github"
 	"cuddly-eureka-/http"
 	"cuddly-eureka-/plugininternal"
 	"cuddly-eureka-/types"
 	"cuddly-eureka-/util"
 )
 
-type PythonEOL struct {
+type LatestPatchPython struct {
 }
 
-func (python PythonEOL) Check(repoName string) types.MaturityCheck {
-	app := initialize.GetAppConstants()
-	g := &github.GitHub{}
-	g = g.Init(app.GitHubToken)
+func (lpp LatestPatchPython) Check(repoName string) types.MaturityCheck {
 	eolDetails, eolErr := http.EOLProvider(http.EOLPython)
 	if eolErr != nil {
 		panic("Failed to find EOL details for " + http.EOLPython + " ")
@@ -23,11 +18,9 @@ func (python PythonEOL) Check(repoName string) types.MaturityCheck {
 
 	var existingVersion = plugininternal.FindPythonVersion(repoName)
 	if existingVersion != nil {
-		eolValue := util.CheckEOL(*existingVersion, eolDetails)
-		return eolValue
+		return util.IsUsingLatestPatchVersion(*existingVersion, eolDetails)
 	}
-
 	return types.MaturityValue0
 }
 
-var Check PythonEOL
+var Check LatestPatchPython
