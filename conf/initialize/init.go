@@ -9,7 +9,7 @@ import (
 )
 
 func config() (*appconstants.MaturityYAMLStruct, error) {
-	fileName := "repo-details.yml" // os.Getenv("MATURITY_REPO_YAML")
+	fileName := os.Getenv("MATURITY_REPO_YAML")
 	data, err := os.ReadFile(fileName)
 	if err != nil {
 		fmt.Println("Error: Failed to read maturity repo yaml ..")
