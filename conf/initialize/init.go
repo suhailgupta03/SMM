@@ -12,8 +12,8 @@ func config() (*appconstants.MaturityYAMLStruct, error) {
 	fileName := os.Getenv("MATURITY_REPO_YAML")
 	data, err := os.ReadFile(fileName)
 	if err != nil {
-		fmt.Println("Error: Failed to read maturity repo yaml ..")
-		fmt.Println("File named '" + fileName + "' must be present in the root")
+		fmt.Println("Warning!!: Failed to read maturity repo yaml ..")
+		fmt.Println("Warning!! File named '" + fileName + "' must be present in the root .. Check execution context")
 		return nil, err
 	}
 
@@ -35,6 +35,11 @@ func isStageTest(stage string) bool {
 
 func getFromEnv() appconstants.Constants {
 	test := new(appconstants.TestConstants)
+	scanAllGitHub := false
+	if strings.ToLower(strings.TrimSpace(os.Getenv("SCAN_ALL_GITHUB_REPOS"))) == "true" {
+		scanAllGitHub = true
+	}
+
 	stage := ""
 	if isStageTest(os.Getenv("STAGE")) {
 		test.Repo.Node = os.Getenv("NODE")
@@ -47,10 +52,11 @@ func getFromEnv() appconstants.Constants {
 		test = nil
 	}
 	return appconstants.Constants{
-		Stage:       stage,
-		GitHubToken: os.Getenv("TOKEN"),
-		GitHubOwner: os.Getenv("OWNER"),
-		Test:        test,
+		Stage:         stage,
+		GitHubToken:   os.Getenv("TOKEN"),
+		GitHubOwner:   os.Getenv("OWNER"),
+		ScanAllGitHub: scanAllGitHub,
+		Test:          test,
 	}
 }
 
@@ -59,9 +65,9 @@ func getFromEnv() appconstants.Constants {
 // the matching variables
 func GetAppConstants() appconstants.Constants {
 	c := getFromEnv()
-	if !isStageTest(os.Getenv("STAGE")) {
-		d, _ := config()
-		c.MaturityRepoDetails = d.Repository
+	d, _ := config()
+	if d != nil {
+		c.MaturityRepoDetails = &d.Repository
 	}
 
 	return c

@@ -4,7 +4,8 @@ type Constants struct {
 	Stage               string
 	GitHubToken         string
 	GitHubOwner         string
-	MaturityRepoDetails []MaturityRepoDetail
+	MaturityRepoDetails *[]MaturityRepoDetail
+	ScanAllGitHub       bool
 	Test                *TestConstants
 }
 

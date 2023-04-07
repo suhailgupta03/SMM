@@ -29,6 +29,7 @@ type RepositoryActions interface {
 type RepoLanguageDetails struct {
 	Name      string
 	Languages []string
+	ECR       *string
 }
 
 type RepoLanguageResponse struct {
