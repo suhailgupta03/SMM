@@ -1,0 +1,10 @@
+name: Repository Details
+# Inside repository
+# name is mandatory
+# ecr is optional
+repository:
+  - name: virality
+    ecr: xxx.dkr.ecr.us-east-1.amazonaws.com/ci:v1.3.1
+  - name: nvmrc_only
+    ecr: xxxx.dkr.ecr.us-east-1.amazonaws.com/cci:v1.3.1
+  - name: issue-test
