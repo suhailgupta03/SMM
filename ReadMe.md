@@ -7,6 +7,28 @@ To generate the `.so` files and run the code, execute the following script
 ./build_run.sh
 ```
 
+### Repository Scanning
+
+- To scan all the repositories in the GitHub account set the following variable in [test.env](./test.env)
+```shell
+export SCAN_ALL_GITHUB_REPOS=true
+```
+
+- To avoid scanning all the repositories set the following variable
+```shell
+export SCAN_ALL_GITHUB_REPOS=false
+```
+and describe the configuration inside [repo-details.yml](./repo-details.yml) in a structure that looks similar to the following.
+```yaml
+name: Repository Details
+repository:
+  - name: virality
+    ecr: xxx.dkr.ecr.us-east-1.amazonaws.com/ci:v1.3.1
+  - name: nvmrc_only
+    ecr: xxxx.dkr.ecr.us-east-1.amazonaws.com/cci:v1.3.1
+  - name: issue-test
+
+```
 ### Available Plugins
 * [NODE EOL](plugins/nodeeol/nodeeol.go)
 * [DJANGO EOL](plugins/djangoeol/djangoeol.go)

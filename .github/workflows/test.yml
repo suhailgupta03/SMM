@@ -22,6 +22,7 @@ jobs:
       DJANGO: "virality"
       TRIVYREPO: "virality"
       MATURITY_REPO_YAML: "repo-details.yml"
+      SCAN_ALL_GITHUB_REPOS: "false"
       GITHUB_TOKEN: ""
       AWS_ACCESS_KEY_ID: ""
       AWS_SECRET_ACCESS_KEY: ""

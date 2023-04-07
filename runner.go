@@ -18,14 +18,30 @@ var (
 )
 
 func getRepos(token string, owner string) []github.RepoLanguageDetails {
-	g := &github.GitHub{}
-	g = g.Init(token)
-	repoNames, rErr := g.GetAuthenticatedUserRepos()
-	if rErr != nil {
-		panic("Failed to fetch the repo names. Check token." + rErr.Error())
+	repoLanguageDetails := make([]github.RepoLanguageDetails, 0)
+	if appConstants.ScanAllGitHub {
+		fmt.Println("Info: Configuration to scan all github set to TRUE .. Will scan all repos for " + owner)
+		g := &github.GitHub{}
+		g = g.Init(token)
+		repoNames, rErr := g.GetAuthenticatedUserRepos()
+		if rErr != nil {
+			panic("Failed to fetch the repo names. Check token." + rErr.Error())
+		}
+		fmt.Printf("Fetched %d repos for %s\n", len(repoNames), owner)
+		repoLanguageDetails = g.GetRepoLanguages(repoNames, owner)
+	} else {
+		fmt.Println("Info: Configuration to scan all github set to FALSE .. Will not scan github for " + owner)
+		if appConstants.MaturityRepoDetails != nil {
+			for _, b := range *appConstants.MaturityRepoDetails {
+				d := github.RepoLanguageDetails{
+					Name:      b.Name,
+					Languages: []string{},
+					ECR:       &b.ECR,
+				}
+				repoLanguageDetails = append(repoLanguageDetails, d)
+			}
+		}
 	}
-	fmt.Printf("Fetched %d repos for %s\n", len(repoNames), owner)
-	repoLanguageDetails := g.GetRepoLanguages(repoNames, owner)
 	return repoLanguageDetails
 }
 
@@ -44,7 +60,6 @@ func main() {
 	}
 	appConstants = initialize.GetAppConstants()
 	repos := getRepos(appConstants.GitHubToken, appConstants.GitHubOwner)
-
 	for _, repo := range repos {
 		repoMaturityValues := make([][]string, 0)
 		for _, e := range entries {

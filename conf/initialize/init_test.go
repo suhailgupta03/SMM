@@ -14,8 +14,13 @@ func TestGetAppConstants(t *testing.T) {
 	os.Setenv("STAGE", "prod")
 	envVars := getFromEnv()
 	assert.Nil(t, envVars.Test)
-	assert.Nil(t, envVars.MaturityRepoDetails)
+	assert.False(t, envVars.ScanAllGitHub)
+
+	os.Setenv("SCAN_ALL_GITHUB_REPOS", "true")
+	envVars = getFromEnv()
+	assert.True(t, envVars.ScanAllGitHub)
 
 	// Revert the old val
 	os.Setenv("STAGE", prevStageVal)
+	os.Setenv("SCAN_ALL_GITHUB_REPOS", "false")
 }
