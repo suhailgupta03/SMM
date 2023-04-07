@@ -2,23 +2,27 @@ package initialize
 
 import (
 	"cuddly-eureka-/appconstants"
-	"cuddly-eureka-/conf/toml"
+	"fmt"
+	"gopkg.in/yaml.v3"
 	"os"
 	"strings"
 )
 
-func config() (toml.RawConfig, error) {
-	configParser := toml.Parser()
-	data, err := os.ReadFile("conf.toml")
+func config() (*appconstants.MaturityYAMLStruct, error) {
+	fileName := os.Getenv("MATURITY_REPO_YAML")
+	data, err := os.ReadFile(fileName)
 	if err != nil {
+		fmt.Println("Error: Failed to read maturity repo yaml ..")
+		fmt.Println("File named '" + fileName + "' must be present in the root")
 		return nil, err
 	}
-	c, cErr := configParser.Unmarshal(data)
-	if cErr != nil {
-		panic(cErr)
+
+	maturityYAML := new(appconstants.MaturityYAMLStruct)
+	if err = yaml.Unmarshal(data, maturityYAML); err != nil {
+		return nil, err
 	}
 
-	return c, cErr
+	return maturityYAML, nil
 }
 
 func isStageTest(stage string) bool {
@@ -54,10 +58,11 @@ func getFromEnv() appconstants.Constants {
 // variables. If it fails to find conf.toml, it checks the ENV to find
 // the matching variables
 func GetAppConstants() appconstants.Constants {
-	//conf, err := config()
-	//if err != nil {
-	//	fmt.Println("Warning: Failed to read the configuration file. " + err.Error())
-	//	return getFromEnv()
-	//}
-	return getFromEnv()
+	c := getFromEnv()
+	if !isStageTest(os.Getenv("STAGE")) {
+		d, _ := config()
+		c.MaturityRepoDetails = d.Repository
+	}
+
+	return c
 }

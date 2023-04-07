@@ -14,6 +14,7 @@ func TestGetAppConstants(t *testing.T) {
 	os.Setenv("STAGE", "prod")
 	envVars := getFromEnv()
 	assert.Nil(t, envVars.Test)
+	assert.Nil(t, envVars.MaturityRepoDetails)
 
 	// Revert the old val
 	os.Setenv("STAGE", prevStageVal)
