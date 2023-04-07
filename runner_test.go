@@ -20,3 +20,20 @@ func TestConfigurationLoad(t *testing.T) {
 	// Revert the old val
 	os.Setenv("STAGE", prevStageVal)
 }
+
+func TestGetRepos(t *testing.T) {
+	pre := os.Getenv("SCAN_ALL_GITHUB_REPOS")
+
+	os.Setenv("SCAN_ALL_GITHUB_REPOS", "true")
+	appConstants = initialize.GetAppConstants()
+	repos := getRepos(appConstants.GitHubToken, appConstants.GitHubOwner)
+	assert.GreaterOrEqual(t, len(repos), 0)
+
+	os.Setenv("SCAN_ALL_GITHUB_REPOS", "false")
+	appConstants = initialize.GetAppConstants()
+	repos = getRepos(appConstants.GitHubToken, appConstants.GitHubOwner)
+	assert.GreaterOrEqual(t, len(repos), 0)
+
+	// Revert the old val
+	os.Setenv("SCAN_ALL_GITHUB_REPOS", pre)
+}
