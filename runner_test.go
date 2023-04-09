@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/stretchr/testify/assert"
 	"os"
+	"path/filepath"
 	"testing"
 )
 
@@ -66,8 +67,14 @@ repository:
 	assert.Equal(t, "issue-test", repos[2].Name)
 	assert.Equal(t, "nvmrc_only", repos[1].Name)
 
+	main()
+	pattern := filepath.Join("."+string(os.PathSeparator), "*.csv")
+	files, _ := filepath.Glob(pattern)
+	assert.Len(t, files, 3)
+
 	// Revert the old val
 	os.Setenv("SCAN_ALL_GITHUB_REPOS", pre)
 	os.Setenv("MATURITY_REPO_YAML", preYML)
 	os.Remove("test-repo-details.yml")
+
 }
