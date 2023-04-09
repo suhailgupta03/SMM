@@ -31,7 +31,7 @@ func parseCriticalVul(trivyResponse string) (*bool, *int) {
 		return &exists, nil
 	}
 
-	trivyOutputRegex := regexp.MustCompile(`(?i)(Total:\s*\d\s*)(\(CRITICAL:\s*\d\s*\))`)
+	trivyOutputRegex := regexp.MustCompile(`(?i)(Total:\s*\d+\s*)(\(CRITICAL:\s*\d+\s*\))`)
 	if trivyOutputRegex.MatchString(trivyResponse) {
 		matches := trivyOutputRegex.FindStringSubmatch(trivyResponse)
 		if len(matches) == 3 {

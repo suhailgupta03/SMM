@@ -40,6 +40,10 @@ repository:
   * All linked tests run with [version 0.38.3](https://github.com/aquasecurity/trivy/releases/tag/v0.38.3) 
   * GitHub workflow also assumes the above version
   * For the plugin to be able to scan private repositories, value to `GITHUB_TOKEN` must be provided in the shell that is executing the code. See, [test.env](./test.env) for example. This is used internally by trivy [as written in the documentation here](https://aquasecurity.github.io/trivy/v0.38/docs/target/git-repository/)
+* [ECRVULN](plugins/ecrvuln/ecrvuln.go)
+  * Uses [trivy](https://github.com/aquasecurity/trivy) to scan repos
+  * All linked tests run with [version 0.38.3](https://github.com/aquasecurity/trivy/releases/tag/v0.38.3)
+  * For the plugin to able to scan private ECR images, values to `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` and `AWS_DEFAULT_REGION` must be provided in the shell as described in the [trivy docs](https://aquasecurity.github.io/trivy/v0.38/docs/advanced/private-registries/ecr/)
 * [LATESTPATCHDJANGO](plugins/latestpatchdjango/latestpatchdjango.go)
 * [LATESTPATCHNODE](plugins/latestpatchnode/latestpatchnode.go)
 * [LATESTPATCHPYTHON](plugins/latestpatchpython/latestpatchpython.go)
