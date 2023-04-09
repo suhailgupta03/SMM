@@ -9,7 +9,7 @@ do
 done
 
 if [ "$ONLY_BUILD" == "--only-build" ]; then
-  exit 1
+  exit 0
 fi
 
 
