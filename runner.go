@@ -36,7 +36,7 @@ func getRepos(token string, owner string) []github.RepoLanguageDetails {
 				d := github.RepoLanguageDetails{
 					Name:      b.Name,
 					Languages: []string{},
-					ECR:       &b.ECR,
+					ECR:       b.ECR,
 				}
 				repoLanguageDetails = append(repoLanguageDetails, d)
 			}
@@ -88,8 +88,20 @@ func main() {
 			Now we extract the ProductVersion and cast that into the
 			new type which is distinct but derives from the ProductVersion
 			*/
-			maturityValue := maturity.Check(repo.Name)
 			maturityMeta := maturity.Meta()
+			var maturityValue types.MaturityCheck
+			var maturityInput string
+			if maturityMeta.EcrType {
+				if len(repo.ECR) > 0 {
+					maturityInput = repo.ECR
+				} else {
+					fmt.Println("Warning: ECR value not supplied for " + repo.Name)
+					maturityInput = ""
+				}
+			} else {
+				maturityInput = repo.Name
+			}
+			maturityValue = maturity.Check(maturityInput)
 			pluginResult = append(pluginResult, maturityMeta.Type, maturityMeta.Name, strconv.Itoa(int(maturityValue)))
 			repoMaturityValues = append(repoMaturityValues, pluginResult)
 		}

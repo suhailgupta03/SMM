@@ -29,7 +29,7 @@ type RepositoryActions interface {
 type RepoLanguageDetails struct {
 	Name      string
 	Languages []string
-	ECR       *string
+	ECR       string
 }
 
 type RepoLanguageResponse struct {
@@ -68,21 +68,6 @@ func (g *GitHub) GetAuthenticatedUserRepos() ([]string, error) {
 		}
 	}
 
-	return repoNames, nil
-}
-
-// GetOrgRepos returns the repo names identified by the organization name. Until the token
-// supplied has privileges, it will return the public repos by default
-func (g *GitHub) GetOrgRepos(org string) ([]string, error) {
-	repos, _, err := g.client.Repositories.ListByOrg(g.ctx, org, nil)
-	repoNames := make([]string, 0)
-	if err != nil {
-		return nil, err
-	} else {
-		for _, r := range repos {
-			repoNames = append(repoNames, *r.Name)
-		}
-	}
 	return repoNames, nil
 }
 

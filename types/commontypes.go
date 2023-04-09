@@ -10,8 +10,9 @@ const (
 )
 
 type MaturityMeta struct {
-	Type string
-	Name string
+	Type    string
+	Name    string
+	EcrType bool
 }
 
 const (

@@ -147,6 +147,25 @@ func TestParseCriticalVul(t *testing.T) {
 	exists, totalVul = parseCriticalVul(trivyResponse6)
 	assert.True(t, *exists)
 	assert.Equal(t, 8, *totalVul)
+
+	trivyResponse7 := `python:3.4 (debian 9.8)
+					=======================
+					Total: 322 (CRITICAL: 322)
+					
+					┌─────────────────────────────┬──────────────────┬──────────┬──────────────────────────┬───────────────────────────┬──────────────────────────────────────────────────────────────┐
+					│           Library           │  Vulnerability   │ Severity │    Installed Version     │       Fixed Version       │                            Title                             │
+					├─────────────────────────────┼──────────────────┼──────────┼──────────────────────────┼───────────────────────────┼──────────────────────────────────────────────────────────────┤
+					│ bzip2                       │ CVE-2019-12900   │ CRITICAL │ 1.0.6-8.1                │                           │ bzip2: out-of-bounds write in function BZ2_decompress        │
+					│                             │                  │          │                          │                           │ https://avd.aquasec.com/nvd/cve-2019-12900                   │
+					├─────────────────────────────┼──────────────────┤          ├──────────────────────────┼───────────────────────────┼──────────────────────────────────────────────────────────────┤
+					│ curl                        │ CVE-2019-5481    │          │ 7.52.1-5+deb9u9          │ 7.52.1-5+deb9u10          │ curl: double free due to subsequent call of realloc()        │
+					│                             │                  │          │                          │                           │ https://avd.aquasec.com/nvd/cve-2019-5481                    │
+					│                             ├──────────────────┤          │                          │                           ├──────────────────────────────────────────────────────────────┤
+					│                             │ CVE-2019-5482    │          │                          │                           │ curl: heap buffer overflow in function tftp_receive_packet() │
+					`
+	exists, totalVul = parseCriticalVul(trivyResponse7)
+	assert.True(t, *exists)
+	assert.Equal(t, 322, *totalVul)
 }
 
 func TestIsRepoVulnerable(t *testing.T) {

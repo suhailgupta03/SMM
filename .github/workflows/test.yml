@@ -41,12 +41,11 @@ jobs:
         wget https://github.com/aquasecurity/trivy/releases/download/v0.38.3/trivy_0.38.3_Linux-64bit.deb
         sudo dpkg -i trivy_0.38.3_Linux-64bit.deb
 
-    - name: Run tests
-      run: go test -v ./...
+    - name: Build Plugins
+      run: ./build_run.sh --git-vars --only-build
 
-    - name: Run Coverage
-      run: |
-        go test ./... -coverpkg=./... -coverprofile coverage.txt  
+    - name: Run tests
+      run: go test -v ./... -coverpkg=./... -coverprofile coverage.txt
       
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v3
