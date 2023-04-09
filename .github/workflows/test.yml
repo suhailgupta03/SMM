@@ -41,6 +41,9 @@ jobs:
         wget https://github.com/aquasecurity/trivy/releases/download/v0.38.3/trivy_0.38.3_Linux-64bit.deb
         sudo dpkg -i trivy_0.38.3_Linux-64bit.deb
 
+    - name: Build Plugins
+      run: ./build_run.sh
+
     - name: Run tests
       run: go test -v ./...
 
