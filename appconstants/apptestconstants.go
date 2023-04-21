@@ -2,6 +2,7 @@ package appconstants
 
 type TestConstants struct {
 	Repo TestRepos
+	AWS  TestAWS
 }
 
 type TestRepos struct {
@@ -10,4 +11,9 @@ type TestRepos struct {
 	Django string
 	Empty  string
 	Trivy  string
+}
+
+type TestAWS struct {
+	LogGroup  string
+	LogStream string
 }

@@ -10,11 +10,17 @@ type Constants struct {
 }
 
 type MaturityRepoDetail struct {
-	Name string `yaml:"name"`
-	ECR  string `yaml:"ecr"`
+	Name string         `yaml:"name"`
+	ECR  string         `yaml:"ecr"`
+	AWS  RepoAWSDetails `yaml:"aws"`
 }
 
 type MaturityYAMLStruct struct {
 	Name       string               `yaml:"name"`
 	Repository []MaturityRepoDetail `yaml:"repository"`
+}
+
+type RepoAWSDetails struct {
+	LogStream string `yaml:"log-stream-name"`
+	LogGroup  string `yaml:"log-group-name"`
 }

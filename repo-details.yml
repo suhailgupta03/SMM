@@ -5,6 +5,6 @@ name: Repository Details
 repository:
   - name: virality
     ecr: xxx.dkr.ecr.us-east-1.amazonaws.com/ci:v1.3.1
-  - name: nvmrc_only
-    ecr: xxxx.dkr.ecr.us-east-1.amazonaws.com/cci:v1.3.1
-  - name: issue-test
+    aws:
+      log-group-name: playground
+      log-stream-name: playground-stream

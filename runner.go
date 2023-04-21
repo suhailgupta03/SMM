@@ -37,6 +37,7 @@ func getRepos(token string, owner string) []github.RepoLanguageDetails {
 					Name:      b.Name,
 					Languages: []string{},
 					ECR:       b.ECR,
+					AWS:       b.AWS,
 				}
 				repoLanguageDetails = append(repoLanguageDetails, d)
 			}
@@ -98,6 +99,8 @@ func main() {
 					fmt.Println("Warning: ECR value not supplied for " + repo.Name)
 					maturityInput = ""
 				}
+			} else if maturityMeta.Type == types.MaturityObservability {
+				maturityInput = repo.AWS.LogGroup + "_" + repo.AWS.LogStream
 			} else {
 				maturityInput = repo.Name
 			}

@@ -2,6 +2,7 @@ package github
 
 import (
 	"context"
+	"cuddly-eureka-/appconstants"
 	"cuddly-eureka-/util"
 	"encoding/json"
 	"fmt"
@@ -30,6 +31,7 @@ type RepoLanguageDetails struct {
 	Name      string
 	Languages []string
 	ECR       string
+	AWS       appconstants.RepoAWSDetails
 }
 
 type RepoLanguageResponse struct {

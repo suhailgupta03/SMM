@@ -1,6 +1,6 @@
 USE_LOCAL_ENV=$1
 ONLY_BUILD=$2
-PLUGINS=("djangoeol" "nodeeol" "pythoneol" "reacteol" "readme" "repovuln" "ecrvuln" "latestpatchdjango" "latestpatchnode" "latestpatchpython")
+PLUGINS=("djangoeol" "nodeeol" "pythoneol" "reacteol" "readme" "repovuln" "ecrvuln" "latestpatchdjango" "latestpatchnode" "latestpatchpython" "haslogging")
 for plugin in "${PLUGINS[@]}"
 do
   go build -buildmode=plugin -o plugins/"$plugin"/"$plugin".so plugins/"$plugin"/"$plugin".go
