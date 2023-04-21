@@ -44,5 +44,5 @@ func TestNodeEOL_Meta(t *testing.T) {
 	node := new(NodeEOL)
 	meta := node.Meta()
 	assert.Equal(t, types.MaturityTypeDependency, meta.Type)
-	assert.Equal(t, "Uses latest patch version: Node", meta.Name)
+	assert.Equal(t, "Not EOL: Node", meta.Name)
 }

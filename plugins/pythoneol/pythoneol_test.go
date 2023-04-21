@@ -18,5 +18,5 @@ func TestPythonEOL_Meta(t *testing.T) {
 	python := new(PythonEOL)
 	meta := python.Meta()
 	assert.Equal(t, types.MaturityTypeDependency, meta.Type)
-	assert.Equal(t, "Uses latest patch version: Python", meta.Name)
+	assert.Equal(t, "Not EOL: Python", meta.Name)
 }

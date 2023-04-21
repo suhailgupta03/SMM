@@ -33,7 +33,7 @@ func (python PythonEOL) Check(repoName string) types.MaturityCheck {
 func (python PythonEOL) Meta() types.MaturityMeta {
 	return types.MaturityMeta{
 		Type: types.MaturityTypeDependency,
-		Name: "Uses latest patch version: Python",
+		Name: "Not EOL: Python",
 	}
 }
 

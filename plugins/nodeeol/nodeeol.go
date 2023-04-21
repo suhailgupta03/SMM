@@ -39,7 +39,7 @@ func (node NodeEOL) Check(repoName string) types.MaturityCheck {
 func (node NodeEOL) Meta() types.MaturityMeta {
 	return types.MaturityMeta{
 		Type: types.MaturityTypeDependency,
-		Name: "Uses latest patch version: Node",
+		Name: "Not EOL: Node",
 	}
 }
 
