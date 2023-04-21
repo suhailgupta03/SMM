@@ -47,6 +47,7 @@ repository:
 * [LATESTPATCHDJANGO](plugins/latestpatchdjango/latestpatchdjango.go)
 * [LATESTPATCHNODE](plugins/latestpatchnode/latestpatchnode.go)
 * [LATESTPATCHPYTHON](plugins/latestpatchpython/latestpatchpython.go)
+* [HASLOGGING](plugins/haslogging/haslogging.go)
 
 ### Description of Maturity Values
 [MaturityValues](types/commontypes.go) are defined here.
