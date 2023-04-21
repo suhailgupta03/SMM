@@ -18,9 +18,10 @@ type MaturityMeta struct {
 const (
 	MaturityTypeDependency = "Dependency"
 	MaturityTypeDocs       = "Docs"
+	MaturityObservability  = "Observability"
 )
 
 type Maturity interface {
-	Check(repoName string) MaturityCheck
+	Check(input string) MaturityCheck
 	Meta() MaturityMeta
 }

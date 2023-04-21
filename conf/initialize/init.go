@@ -47,6 +47,8 @@ func getFromEnv() appconstants.Constants {
 		test.Repo.NVMRC = os.Getenv("NVMRC_ONLY")
 		test.Repo.Django = os.Getenv("DJANGO")
 		test.Repo.Trivy = os.Getenv("TRIVYREPO")
+		test.AWS.LogGroup = os.Getenv("AWS_TEST_LOG_GROUP")
+		test.AWS.LogStream = os.Getenv("AWS_TEST_LOG_STREAM")
 		stage = "test"
 	} else {
 		test = nil
