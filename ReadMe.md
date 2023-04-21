@@ -48,6 +48,9 @@ repository:
 * [LATESTPATCHNODE](plugins/latestpatchnode/latestpatchnode.go)
 * [LATESTPATCHPYTHON](plugins/latestpatchpython/latestpatchpython.go)
 * [HASLOGGING](plugins/haslogging/haslogging.go)
+  * Uses AWS config stored inside `~/.aws/config` or the AWS ENV exported in the shell running the program
+* [HASJSONLOGGING](plugins/hasjsonlogging/hasjsonlogging.go)
+  * Uses AWS config stored inside `~/.aws/config` or the AWS ENV exported in the shell running the program
 
 ### Description of Maturity Values
 [MaturityValues](types/commontypes.go) are defined here.
