@@ -25,3 +25,11 @@ func TestAWS_DoesLogStreamExist(t *testing.T) {
 	exists = aws.DoesLogStreamExist("random-group-name", "random-stream-name")
 	assert.False(t, exists)
 }
+
+func TestAWS_GetLogs(t *testing.T) {
+	aws := AWSInit()
+	app := initialize.GetAppConstants()
+	logs, err := aws.GetLogs(app.Test.AWS.LogGroup, app.Test.AWS.LogStream)
+	assert.Nil(t, err)
+	assert.NotNil(t, logs)
+}
