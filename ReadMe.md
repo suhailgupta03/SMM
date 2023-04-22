@@ -4,7 +4,18 @@
 ### Generate .so Files and Run Code
 To generate the `.so` files and run the code, execute the following script
 ```shell
-./build_run.sh --local-vars
+make run-local
+```
+
+### Generate binary and run SMM
+```shell
+make build
+./smm
+```
+
+### Create the distribution build
+```shell
+make create-installation
 ```
 
 ### Repository Scanning
@@ -18,7 +29,7 @@ export SCAN_ALL_GITHUB_REPOS=true
 ```shell
 export SCAN_ALL_GITHUB_REPOS=false
 ```
-and describe the configuration inside [repo-details.yml](./repo-details.yml) in a structure that looks similar to the following.
+and describe the configuration inside [repo-details.yml](assets/repo-details.yml) in a structure that looks similar to the following.
 ```yaml
 name: Repository Details
 repository:
@@ -112,4 +123,8 @@ go test -v ./...
 To also print the code coverage use the following command
 ```shell
 go test -v ./... -cover
+```
+To open coverage report along with running the test cases
+```shell
+make test
 ```
