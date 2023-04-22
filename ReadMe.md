@@ -15,7 +15,7 @@ make build
 
 ### Create the distribution build
 ```shell
-make create-installation
+make dist
 ```
 
 ### Repository Scanning

@@ -44,7 +44,7 @@ jobs:
         sudo dpkg -i trivy_0.38.3_Linux-64bit.deb
 
     - name: Build Plugins
-      run: make all
+      run: make plugins
 
     - name: Run tests
       run: go test -v ./... -coverpkg=./... -coverprofile coverage.txt

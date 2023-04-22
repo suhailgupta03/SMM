@@ -37,7 +37,7 @@ BIN := smm
 PLUGIN_GO_FILES := $(shell find . -type f  ! -name "runner.go" -name "*.go")
 RUNNER_FILES := $(shell find . -path ./plugins -prune -o -name '*.go')
 
-all: $(PLUGIN_BUILD_PATHS)
+plugins: $(PLUGIN_BUILD_PATHS)
 
 $(PLUGIN_BUILD_ROOT)/$(DJANGO_EOL).so: $(PLUGIN_GO_FILES)
 	go build -buildmode=plugin -o $@ $(PLUGIN_CODE_ROOT)/$(DJANGO_EOL)/$(DJANGO_EOL).go
@@ -87,14 +87,12 @@ run:
 	go run runner.go
 
 .PHONY: run-local
-run-local:
-	make
+run-local: $(plugins)
 	source test.env && make run
 
-.PHONY: create-installation
-create-installation:
-	make build
-	mkdir dist && cp -R assets dist/assets && cp ${MATURITY_REPO_YAML} dist/${MATURITY_REPO_YAML} && cp ./smm dist/
+.PHONY: dist
+dist: build $(plugins)
+	rm -rf dist && mkdir dist && cp -R assets dist/assets && cp ${MATURITY_REPO_YAML} dist/${MATURITY_REPO_YAML} && cp ./smm dist/
 
 # Run Go tests
 .PHONY: test
