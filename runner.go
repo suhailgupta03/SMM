@@ -7,7 +7,6 @@ import (
 	"cuddly-eureka-/output/csv"
 	"cuddly-eureka-/types"
 	"fmt"
-	"os"
 	"path/filepath"
 	"plugin"
 	"strconv"
@@ -55,22 +54,16 @@ func write(data [][]string, repoName string) {
 }
 
 func main() {
-	entries, err := os.ReadDir("plugins")
-	if err != nil {
-		panic(err)
-	}
+	matches, _ := filepath.Glob(filepath.Join("assets", "plugins", "*.so"))
 	appConstants = initialize.GetAppConstants()
 	repos := getRepos(appConstants.GitHubToken, appConstants.GitHubOwner)
 	for _, repo := range repos {
 		repoMaturityValues := make([][]string, 0)
-		for _, e := range entries {
+		for _, pluginFilePath := range matches {
 			pluginResult := make([]string, 0)
 			/**
 			Load all the plugins and run for each repo
 			*/
-			pluginDirName := e.Name()
-			pluginFileName := pluginDirName + ".so"
-			pluginFilePath := filepath.Join("plugins", pluginDirName, pluginFileName)
 			plug, plugErr := plugin.Open(pluginFilePath)
 			if plugErr != nil {
 				panic(plugErr)
