@@ -17,7 +17,7 @@ var (
 
 func config(yamlToReadFrom *string) (*appconstants.MaturityYAMLStruct, error) {
 	fileName := os.Getenv("MATURITY_REPO_YAML")
-	if yamlToReadFrom != nil {
+	if len(*yamlToReadFrom) > 0 {
 		// Override the bash variable with the value passed using the application flag
 		fileName = *yamlToReadFrom
 	}
@@ -91,7 +91,7 @@ func getFromEnv(flags *appconstants.ApplicationFlags) appconstants.Constants {
 // initFlags enables the command line flags for the application
 func initFlags() appconstants.ApplicationFlags {
 	repo = flag.NewFlagSet("repo", flag.ContinueOnError)
-	ymlFileName := repo.String("yml", "repo-details.yml", "(optional) input yaml file holding repository details")
+	ymlFileName := repo.String("yml", "", "(optional) input yaml file holding repository details")
 
 	github = flag.NewFlagSet("github", flag.ContinueOnError)
 	githubToken := github.String("token", "", "(optional) github token to use to scan a repository")
@@ -128,6 +128,10 @@ func commandParser(osArgs []string) {
 		}
 		osArgs = github.Args()
 		break
+	default:
+		// Since there is no command to be parsed,
+		// simply return in the next recursive call
+		osArgs = []string{}
 	}
 	commandParser(osArgs)
 
@@ -138,7 +142,6 @@ func commandParser(osArgs []string) {
 // the matching variables
 func GetAppConstants() appconstants.Constants {
 	flags := initFlags()
-	fmt.Println(flags)
 	c := getFromEnv(&flags)
 	d, _ := config(flags.YAMLFile)
 	if d != nil {

@@ -35,7 +35,7 @@ func TestGetAppConstants2(t *testing.T) {
 
 	os.Args = []string{}
 	f = initFlags()
-	assert.Equal(t, "repo-details.yml", *f.YAMLFile)
+	assert.Equal(t, "", *f.YAMLFile)
 	assert.Equal(t, "", *f.GitHubToken)
 	assert.Equal(t, "", *f.GitHubOwner)
 
