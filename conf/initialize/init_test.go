@@ -1,6 +1,7 @@
 package initialize
 
 import (
+	"fmt"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
@@ -52,4 +53,32 @@ func TestGetAppConstants2(t *testing.T) {
 	// Set back the values
 	os.Setenv("TOKEN", prevToken)
 	os.Setenv("OWNER", prevOwner)
+}
+
+func TestShouldReadYAMLFromFlag(t *testing.T) {
+	repoYML := `name: Repository Details
+# Inside repository
+# name is mandatory
+# ecr is optional
+repository:
+  - name: dummyrepo
+    ecr: xxxx.dkr.ecr.us-east-1.amazonaws.com/ci:v2
+  - name: dummyrepo_2
+`
+
+	writeErr := os.WriteFile("foobar.yml", []byte(repoYML), 0666)
+	if writeErr != nil {
+		fmt.Println("Failed to create test file ", writeErr.Error())
+		panic("")
+	}
+
+	os.Args = []string{"...", "repo", "-yml=foobar.yml", "github", "-token=TOKEN", "-owner=OWNER"}
+	consts := GetAppConstants()
+	repoDetails := *consts.MaturityRepoDetails
+	assert.Len(t, repoDetails, 2)
+	assert.Equal(t, "dummyrepo", repoDetails[0].Name)
+	assert.Equal(t, "dummyrepo_2", repoDetails[1].Name)
+
+	// Revert
+	os.Remove("foobar.yml")
 }

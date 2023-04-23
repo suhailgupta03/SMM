@@ -112,14 +112,6 @@ export EMPTY=
 ```
 
 ### Running the test cases
-Once the variables have been exported, the tests could be run as follows
-```shell
-go test -v ./...
-```
-To also print the code coverage use the following command
-```shell
-go test -v ./... -cover
-```
 To open coverage report along with running the test cases
 ```shell
 make test
