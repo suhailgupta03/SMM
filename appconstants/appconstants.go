@@ -24,3 +24,9 @@ type RepoAWSDetails struct {
 	LogStream string `yaml:"log-stream-name"`
 	LogGroup  string `yaml:"log-group-name"`
 }
+
+type ApplicationFlags struct {
+	YAMLFile    *string
+	GitHubToken *string
+	GitHubOwner *string
+}

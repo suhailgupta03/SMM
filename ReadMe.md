@@ -1,13 +1,13 @@
 [![Run Tests](https://github.com/suhailgupta03/cuddly-eureka-/actions/workflows/test.yml/badge.svg)](https://github.com/suhailgupta03/cuddly-eureka-/actions/workflows/test.yml)
 [![codecov](https://codecov.io/gh/suhailgupta03/cuddly-eureka-/branch/main/graph/badge.svg?token=tNKcOjlxLo)](https://codecov.io/gh/suhailgupta03/cuddly-eureka-)
 
-### Generate .so Files and Run Code
+### Build plugins and run 
 To generate the `.so` files and run the code, execute the following script
 ```shell
 make run-local
 ```
 
-### Generate binary and run SMM
+### Generate binary and run SMM binary
 ```shell
 make build
 ./smm
@@ -18,28 +18,24 @@ make build
 make dist
 ```
 
-### Repository Scanning
-
-- To scan all the repositories in the GitHub account set the following variable in [test.env](./test.env)
-```shell
-export SCAN_ALL_GITHUB_REPOS=true
-```
-
-- To avoid scanning all the repositories set the following variable
-```shell
-export SCAN_ALL_GITHUB_REPOS=false
-```
+### Repository scan configuration
 and describe the configuration inside [repo-details.yml](assets/repo-details.yml) in a structure that looks similar to the following.
 ```yaml
 name: Repository Details
 repository:
   - name: virality
     ecr: xxx.dkr.ecr.us-east-1.amazonaws.com/ci:v1.3.1
-  - name: nvmrc_only
-    ecr: xxxx.dkr.ecr.us-east-1.amazonaws.com/cci:v1.3.1
-  - name: issue-test
-
+    aws:
+      log-group-name: playground
+      log-stream-name: playground-stream
 ```
+
+### Passing flags to the binary
+```shell
+./smm  repo -yml=scan-details.yml
+  github -token=SECRET_TOKEN -owner=GITHUB_OWNER
+```
+
 ### Available Plugins
 * [NODE EOL](plugins/nodeeol/nodeeol.go)
 * [DJANGO EOL](plugins/djangoeol/djangoeol.go)
@@ -116,14 +112,6 @@ export EMPTY=
 ```
 
 ### Running the test cases
-Once the variables have been exported, the tests could be run as follows
-```shell
-go test -v ./...
-```
-To also print the code coverage use the following command
-```shell
-go test -v ./... -cover
-```
 To open coverage report along with running the test cases
 ```shell
 make test
