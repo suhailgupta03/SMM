@@ -29,6 +29,7 @@ type RepoAWSDetails struct {
 type CodeCov struct {
 	Bearer string `yaml:"bearer"`
 }
+
 type ApplicationFlags struct {
 	YAMLFile    *string
 	GitHubToken *string
