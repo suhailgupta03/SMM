@@ -10,15 +10,17 @@ const (
 )
 
 type MaturityMeta struct {
-	Type    string
-	Name    string
-	EcrType bool
+	Type        string
+	Name        string
+	EcrType     bool
+	CodeCovType bool
 }
 
 const (
 	MaturityTypeDependency = "Dependency"
 	MaturityTypeDocs       = "Docs"
 	MaturityObservability  = "Observability"
+	MaturityCI             = "CI"
 )
 
 type Maturity interface {

@@ -32,6 +32,7 @@ type RepoLanguageDetails struct {
 	Languages []string
 	ECR       string
 	AWS       appconstants.RepoAWSDetails
+	CodeCov   appconstants.CodeCov
 }
 
 type RepoLanguageResponse struct {

@@ -10,9 +10,10 @@ type Constants struct {
 }
 
 type MaturityRepoDetail struct {
-	Name string         `yaml:"name"`
-	ECR  string         `yaml:"ecr"`
-	AWS  RepoAWSDetails `yaml:"aws"`
+	Name    string         `yaml:"name"`
+	ECR     string         `yaml:"ecr"`
+	AWS     RepoAWSDetails `yaml:"aws"`
+	CodeCov CodeCov        `yaml:"codecov"`
 }
 
 type MaturityYAMLStruct struct {
@@ -25,6 +26,9 @@ type RepoAWSDetails struct {
 	LogGroup  string `yaml:"log-group-name"`
 }
 
+type CodeCov struct {
+	Bearer string `yaml:"bearer"`
+}
 type ApplicationFlags struct {
 	YAMLFile    *string
 	GitHubToken *string

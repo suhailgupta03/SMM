@@ -17,6 +17,7 @@ PYTHON_EOL := pythoneol
 REACT_EOL := reacteol
 README := readme
 REPO_VUL := repovuln
+MIN_COV := mincov
 
 # Plugin build paths
 PLUGIN_BUILD_PATHS := $(PLUGIN_BUILD_ROOT)/$(DJANGO_EOL).so \
@@ -30,7 +31,8 @@ PLUGIN_BUILD_PATHS := $(PLUGIN_BUILD_ROOT)/$(DJANGO_EOL).so \
 				$(PLUGIN_BUILD_ROOT)/$(PYTHON_EOL).so \
 				$(PLUGIN_BUILD_ROOT)/$(REACT_EOL).so \
 				$(PLUGIN_BUILD_ROOT)/$(README).so \
-				$(PLUGIN_BUILD_ROOT)/$(REPO_VUL).so
+				$(PLUGIN_BUILD_ROOT)/$(REPO_VUL).so \
+				$(PLUGIN_BUILD_ROOT)/$(MIN_COV).so
 
 
 BIN := smm
@@ -75,6 +77,8 @@ $(PLUGIN_BUILD_ROOT)/$(README).so: $(PLUGIN_GO_FILES)
 $(PLUGIN_BUILD_ROOT)/$(REPO_VUL).so: $(PLUGIN_GO_FILES)
 	go build -buildmode=plugin -o $@ $(PLUGIN_CODE_ROOT)/$(REPO_VUL)/$(REPO_VUL).go
 
+$(PLUGIN_BUILD_ROOT)/$(MIN_COV).so: $(PLUGIN_GO_FILES)
+	go build -buildmode=plugin -o $@ $(PLUGIN_CODE_ROOT)/$(MIN_COV)/$(MIN_COV).go
 
 .PHONY: build
 build: $(BIN)

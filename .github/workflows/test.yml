@@ -29,6 +29,9 @@ jobs:
       AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
       AWS_TEST_LOG_GROUP: "playground"
       AWS_TEST_LOG_STREAM: "playground-stream"
+      CODECOV_TEST_REPO: "cuddly-eureka-"
+      CODECOV_TEST_OWNER: ${{ secrets.OWNER }}
+      CODECOV_TEST_BEARER_TOKEN: ${{ secrets.CODECOV_TEST_BEARER_TOKEN }}
 
     steps:
     - uses: actions/checkout@v3
