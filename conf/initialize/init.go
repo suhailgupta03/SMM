@@ -63,6 +63,9 @@ func getFromEnv(flags *appconstants.ApplicationFlags) appconstants.Constants {
 		test.Repo.Trivy = os.Getenv("TRIVYREPO")
 		test.AWS.LogGroup = os.Getenv("AWS_TEST_LOG_GROUP")
 		test.AWS.LogStream = os.Getenv("AWS_TEST_LOG_STREAM")
+		test.CodeCov.BearerToken = os.Getenv("CODECOV_TEST_BEARER_TOKEN")
+		test.CodeCov.RepoOwner = os.Getenv("CODECOV_TEST_OWNER")
+		test.CodeCov.RepoName = os.Getenv("CODECOV_TEST_REPO")
 		stage = "test"
 	} else {
 		test = nil

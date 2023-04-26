@@ -37,6 +37,7 @@ func getRepos(token string, owner string) []github.RepoLanguageDetails {
 					Languages: []string{},
 					ECR:       b.ECR,
 					AWS:       b.AWS,
+					CodeCov:   appconstants.CodeCov{Bearer: b.CodeCov.Bearer},
 				}
 				repoLanguageDetails = append(repoLanguageDetails, d)
 			}
@@ -94,6 +95,8 @@ func main() {
 				}
 			} else if maturityMeta.Type == types.MaturityObservability {
 				maturityInput = repo.AWS.LogGroup + "_" + repo.AWS.LogStream
+			} else if maturityMeta.CodeCovType == true {
+				maturityInput = fmt.Sprintf("%s_%s_%s_%s", repo.Name, appConstants.GitHubOwner, "github", repo.CodeCov.Bearer)
 			} else {
 				maturityInput = repo.Name
 			}

@@ -8,3 +8,5 @@ repository:
     aws:
       log-group-name: playground
       log-stream-name: playground-stream
+    codecov:
+      bearer: x-y-z-a-b
