@@ -14,6 +14,7 @@ const (
 	EOLPython EOLProduct = "python"
 	EOLDjango EOLProduct = "django"
 	EOLReact  EOLProduct = "react"
+	EOLGO     EOLProduct = "go"
 )
 
 type ProductEOLDetails struct {

@@ -54,6 +54,13 @@ func TestIsVersionEOL(t *testing.T) {
 	eolValue = CheckEOL("3.10.2-slim", eolDetails)
 	assert.Equal(t, types.MaturityValue2, eolValue)
 
+	eolDetails, err = http.EOLProvider(http.EOLGO)
+	assert.Nil(t, err)
+	eolValue = CheckEOL("1.10", eolDetails)
+	assert.Equal(t, types.MaturityValue1, eolValue)
+	eolValue = CheckEOL("1.20", eolDetails)
+	assert.Equal(t, types.MaturityValue2, eolValue)
+
 }
 
 func TestCheckNormalizeString(t *testing.T) {

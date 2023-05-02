@@ -193,3 +193,12 @@ func (g *GitHub) GetDockerFile(repoName, owner string) (*string, error) {
 
 	return content, nil
 }
+
+func (g *GitHub) GetGoModFile(repoName, owner string) (*string, error) {
+	content, err := g.GetRepoContent(repoName, owner, "go.mod")
+	if err != nil {
+		return nil, err
+	}
+
+	return content, nil
+}
