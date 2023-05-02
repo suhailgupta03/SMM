@@ -15,6 +15,7 @@ LATEST_PATCH_PYTHON := latestpatchpython
 NODE_EOL := nodeeol
 PYTHON_EOL := pythoneol
 REACT_EOL := reacteol
+GO_EOL := goeol
 README := readme
 REPO_VUL := repovuln
 MIN_COV := mincov
@@ -32,7 +33,8 @@ PLUGIN_BUILD_PATHS := $(PLUGIN_BUILD_ROOT)/$(DJANGO_EOL).so \
 				$(PLUGIN_BUILD_ROOT)/$(REACT_EOL).so \
 				$(PLUGIN_BUILD_ROOT)/$(README).so \
 				$(PLUGIN_BUILD_ROOT)/$(REPO_VUL).so \
-				$(PLUGIN_BUILD_ROOT)/$(MIN_COV).so
+				$(PLUGIN_BUILD_ROOT)/$(MIN_COV).so \
+				$(PLUGIN_BUILD_ROOT)/$(GO_EOL).so
 
 
 BIN := smm
@@ -79,6 +81,9 @@ $(PLUGIN_BUILD_ROOT)/$(REPO_VUL).so: $(PLUGIN_GO_FILES)
 
 $(PLUGIN_BUILD_ROOT)/$(MIN_COV).so: $(PLUGIN_GO_FILES)
 	go build -buildmode=plugin -o $@ $(PLUGIN_CODE_ROOT)/$(MIN_COV)/$(MIN_COV).go
+
+$(PLUGIN_BUILD_ROOT)/$(GO_EOL).so: $(PLUGIN_GO_FILES)
+	go build -buildmode=plugin -o $@ $(PLUGIN_CODE_ROOT)/$(GO_EOL)/$(GO_EOL).go
 
 .PHONY: build
 build: $(BIN)

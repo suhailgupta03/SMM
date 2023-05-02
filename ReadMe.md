@@ -59,6 +59,7 @@ repository:
 * [HASJSONLOGGING](plugins/hasjsonlogging/hasjsonlogging.go)
   * Uses AWS config stored inside `~/.aws/config` or the AWS ENV exported in the shell running the program
 * [MINCOV](plugins/mincov/mincov.go)
+* [GOEOL](plugins/goeol/goeol.go)
 
 ### Description of Maturity Values
 [MaturityValues](types/commontypes.go) are defined here.
