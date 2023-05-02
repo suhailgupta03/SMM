@@ -51,7 +51,7 @@ require (
 	version = extractVersionFromMod(nil)
 	assert.Nil(t, version)
 
-	modFile = `module github.com/BetterWorks/authorization-api
+	modFile = `module github.com/foo/authorization-api
 
 go 1.19
 
