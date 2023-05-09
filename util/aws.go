@@ -18,7 +18,7 @@ func AWSInit() *AWS {
 	// If the file is not present, will try to read the standard ENV variables
 	cfg, err := config.LoadDefaultConfig(context.TODO())
 	if err != nil {
-		log.Fatalf("Failed to read the AWS configuration")
+		log.Fatalf("Failed to read the AWS configuration %v", err)
 	}
 	return &AWS{
 		cfg,
