@@ -69,3 +69,5 @@ func (g *GoEOL) Meta() types.MaturityMeta {
 		Name: "Not EOL: GO",
 	}
 }
+
+var Check GoEOL
