@@ -92,12 +92,8 @@ $(BIN): $(RUNNER_FILES)
 	go build -o $(BIN)
 
 .PHONY: run
-run:
-	go run runner.go
-
-.PHONY: run-local
-run-local: $(plugins)
-	source test.env && make run
+run: plugins
+	source test.env && go run runner.go
 
 .PHONY: dist
 dist: build $(plugins)

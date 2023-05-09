@@ -72,12 +72,28 @@ func findMatchingVersion(versionToFind string, eolList []http.ProductEOLDetails)
 			details.Cycle = "-1"
 		}
 	}
+
+	if len(details.Cycle) == 0 {
+		// If the release cycle was still not found, go with the major
+		// version match
+		vToFind, _ := version.NewVersion(versionToFind)
+		majorVToFind := vToFind.Segments()[0]
+		for _, d := range eolList {
+			v, _ := version.NewVersion(d.Cycle)
+			if v.Segments()[0] == majorVToFind {
+				details = &d
+				break
+			}
+		}
+	}
 	return *details
 }
 
 func isVersionEOL(versionToCheck string, eolDetails http.ProductEOLDetails) bool {
 	versionWithTrimmedDots := getVersionWithRTrimmedDots(versionToCheck)
-	if eolDetails.Cycle == versionToCheck || versionWithTrimmedDots == eolDetails.Cycle {
+	vToCheck, _ := version.NewVersion(versionToCheck)
+	eolVersion, _ := version.NewVersion(eolDetails.Cycle)
+	if eolDetails.Cycle == versionToCheck || versionWithTrimmedDots == eolDetails.Cycle || vToCheck.Segments()[0] == eolVersion.Segments()[0] {
 		typeofEOL := reflect.TypeOf(eolDetails.EOL).String()
 		if typeofEOL == "bool" {
 			return eolDetails.EOL.(bool)
