@@ -16,11 +16,12 @@ func TestGenerate(t *testing.T) {
 	rowHeader := []string{"name", "type", "nametype"}
 
 	fileName := "temp.csv"
-	generated, err := Generate(rowHeader, rowData, fileName)
+	generated, err := Generate(rowHeader, rowData, fileName, nil)
 	assert.True(t, generated)
 	assert.Nil(t, err)
 
-	generated, err = Generate(rowHeader, rowData, "some/random/path/__/"+fileName)
+	dir := "random"
+	generated, err = Generate(rowHeader, rowData, fileName, &dir)
 	assert.False(t, generated)
 	assert.NotNil(t, err)
 
