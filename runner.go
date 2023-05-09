@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"path/filepath"
 	"plugin"
-	"strconv"
 )
 
 var (
@@ -50,7 +49,8 @@ func write(data [][]string, repoName string) {
 	headers := make([]string, 0)
 	headers = append(headers, "Type", "Name", "Maturity Value")
 	filename := repoName + "_out.csv"
-	csv.Generate(headers, data, filename)
+	dir := "gen_csv"
+	csv.Generate(headers, data, filename, &dir)
 	fmt.Printf("Generated %s 📝\n", filename)
 }
 
@@ -101,7 +101,8 @@ func main() {
 				maturityInput = repo.Name
 			}
 			maturityValue = maturity.Check(maturityInput)
-			pluginResult = append(pluginResult, maturityMeta.Type, maturityMeta.Name, strconv.Itoa(int(maturityValue)))
+			mappedMValue := types.MValueToString(maturityValue)
+			pluginResult = append(pluginResult, maturityMeta.Type, maturityMeta.Name, mappedMValue)
 			repoMaturityValues = append(repoMaturityValues, pluginResult)
 		}
 		write(repoMaturityValues, repo.Name)

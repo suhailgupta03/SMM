@@ -27,3 +27,13 @@ type Maturity interface {
 	Check(input string) MaturityCheck
 	Meta() MaturityMeta
 }
+
+func MValueToString(mval MaturityCheck) string {
+	if mval == 2 {
+		return "True"
+	} else if mval == 1 {
+		return "False"
+	} else {
+		return "N/A"
+	}
+}
