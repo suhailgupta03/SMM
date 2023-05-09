@@ -4,7 +4,7 @@
 ### Build plugins and run 
 To generate the `.so` files and run the code, execute the following script
 ```shell
-make run-local
+make run
 ```
 
 ### Generate binary and run SMM binary
