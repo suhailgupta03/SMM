@@ -8,7 +8,7 @@ import (
 type ECRVul struct {
 }
 
-func (v *ECRVul) Check(ecrImage string) types.MaturityCheck {
+func (v *ECRVul) Check(ecrImage string, opts ...*string) types.MaturityCheck {
 	isVuln, err := util.IsImageVulnerable(ecrImage)
 	if err != nil {
 		return types.MaturityValue0

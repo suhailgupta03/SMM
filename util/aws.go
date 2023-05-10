@@ -5,6 +5,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
+	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs/types"
 	"log"
 	"time"
 )
@@ -112,4 +113,81 @@ func (aws *AWS) GetLogs(logGroupName, logStreamName string) ([]*string, error) {
 	}
 
 	return logs, nil
+}
+
+func (aws *AWS) GetLogsUsingQuery(logGroupName, query string) ([]*string, error) {
+	ctx, cancelFn := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancelFn()
+
+	var (
+		maxLogEventsToFetch int32 = 1000
+		previousWeek              = time.Now().Add(time.Hour * 24 * 7 * -1).UnixMilli()
+		current                   = time.Now().UnixMilli()
+	)
+
+	client := cloudwatchlogs.NewFromConfig(aws.cfg)
+
+	startQueryResponse, err := client.StartQuery(ctx, &cloudwatchlogs.StartQueryInput{
+		EndTime:      &current,
+		QueryString:  &query,
+		StartTime:    &previousWeek,
+		Limit:        &maxLogEventsToFetch,
+		LogGroupName: &logGroupName,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	logResponse, logErr := client.GetQueryResults(ctx, &cloudwatchlogs.GetQueryResultsInput{
+		QueryId: startQueryResponse.QueryId,
+	})
+
+	if logErr != nil {
+		return nil, logErr
+	}
+
+	result := make([]*string, 0)
+
+	if logResponse.Status == types.QueryStatusRunning || logResponse.Status == types.QueryStatusScheduled {
+		ticker := time.NewTicker(time.Second * 20)
+		for _ = range ticker.C {
+			lR, lErr := fetchQueryResults(startQueryResponse.QueryId, client)
+			if lErr != nil || lR.Status != types.QueryStatusRunning {
+				ticker.Stop()
+				result = extractResultsFromQueryResults(lR)
+				break
+			}
+
+		}
+	} else if logResponse.Status == types.QueryStatusComplete {
+		result = extractResultsFromQueryResults(logResponse)
+	}
+
+	return result, nil
+
+}
+
+func fetchQueryResults(queryId *string, client *cloudwatchlogs.Client) (*cloudwatchlogs.GetQueryResultsOutput, error) {
+	ctx, cancelFn := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancelFn()
+
+	return client.GetQueryResults(ctx, &cloudwatchlogs.GetQueryResultsInput{
+		QueryId: queryId,
+	})
+}
+
+func extractResultsFromQueryResults(output *cloudwatchlogs.GetQueryResultsOutput) []*string {
+	result := make([]*string, 0)
+	if output != nil {
+		for _, segment := range output.Results {
+			for _, s := range segment {
+				if s.Field != nil && *s.Field == "@message" {
+					result = append(result, s.Value)
+				}
+			}
+		}
+	}
+
+	return result
 }

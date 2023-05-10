@@ -44,6 +44,12 @@ func TestHasJSONLogging_Check(t *testing.T) {
 	l := new(HasJSONLogging)
 	maturity := l.Check(app.Test.AWS.LogGroup + "_" + app.Test.AWS.LogStream)
 	assert.NotEqualValues(t, types.MaturityValue0, maturity)
+
+	query := `sort @timestamp desc
+| limit 20`
+
+	maturity = l.Check(app.Test.AWS.LogGroup+"_"+app.Test.AWS.LogStream, &query)
+	assert.NotEqualValues(t, types.MaturityValue0, maturity)
 }
 
 func TestHasJSONLogging_Meta(t *testing.T) {

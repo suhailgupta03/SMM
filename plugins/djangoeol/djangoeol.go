@@ -26,7 +26,7 @@ func checkVersionFromRequirementsTxt(g *github.GitHub, repoName, gitHubOwner str
 	return nil, false
 }
 
-func (django DjangoEOL) Check(repoName string) types.MaturityCheck {
+func (django DjangoEOL) Check(repoName string, opts ...*string) types.MaturityCheck {
 	app := initialize.GetAppConstants()
 	g := &github.GitHub{}
 	g = g.Init(app.GitHubToken)

@@ -10,7 +10,7 @@ import (
 type ReadMe struct {
 }
 
-func (r *ReadMe) Check(repoName string) types.MaturityCheck {
+func (r *ReadMe) Check(repoName string, opts ...*string) types.MaturityCheck {
 	app := initialize.GetAppConstants()
 	g := &github.GitHub{}
 	g = g.Init(app.GitHubToken)

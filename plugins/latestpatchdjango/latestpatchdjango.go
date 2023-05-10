@@ -26,7 +26,7 @@ func checkVersionFromRequirementsTxt(g *github.GitHub, repoName, gitHubOwner str
 	return nil, false
 }
 
-func (lpd LatestPatchDjango) Check(repoName string) types.MaturityCheck {
+func (lpd LatestPatchDjango) Check(repoName string, opts ...*string) types.MaturityCheck {
 	app := initialize.GetAppConstants()
 	g := &github.GitHub{}
 	g = g.Init(app.GitHubToken)

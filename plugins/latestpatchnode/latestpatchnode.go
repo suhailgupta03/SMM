@@ -12,7 +12,7 @@ import (
 type LatestPatchNode struct {
 }
 
-func (lpn LatestPatchNode) Check(repoName string) types.MaturityCheck {
+func (lpn LatestPatchNode) Check(repoName string, opts ...*string) types.MaturityCheck {
 	app := initialize.GetAppConstants()
 	g := &github.GitHub{}
 	g = g.Init(app.GitHubToken)

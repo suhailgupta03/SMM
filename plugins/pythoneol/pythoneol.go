@@ -12,7 +12,7 @@ import (
 type PythonEOL struct {
 }
 
-func (python PythonEOL) Check(repoName string) types.MaturityCheck {
+func (python PythonEOL) Check(repoName string, opts ...*string) types.MaturityCheck {
 	app := initialize.GetAppConstants()
 	g := &github.GitHub{}
 	g = g.Init(app.GitHubToken)

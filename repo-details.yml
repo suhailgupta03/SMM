@@ -8,5 +8,6 @@ repository:
     aws:
       log-group-name: playground
       log-stream-name: playground-stream
+      cwl-query: fields @timestamp, @message, @logStream, @log | sort @timestamp desc
     codecov:
       bearer: x-y-z-a-b

@@ -26,7 +26,7 @@ func getVersionFromPackageJson(g *github.GitHub, repoName, gitHubOwner string) (
 
 	return nil, false
 }
-func (react *ReactEOL) Check(repoName string) types.MaturityCheck {
+func (react *ReactEOL) Check(repoName string, opts ...*string) types.MaturityCheck {
 	app := initialize.GetAppConstants()
 	g := &github.GitHub{}
 	g = g.Init(app.GitHubToken)

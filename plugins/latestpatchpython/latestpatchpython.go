@@ -10,7 +10,7 @@ import (
 type LatestPatchPython struct {
 }
 
-func (lpp LatestPatchPython) Check(repoName string) types.MaturityCheck {
+func (lpp LatestPatchPython) Check(repoName string, opts ...*string) types.MaturityCheck {
 	eolDetails, eolErr := http.EOLProvider(http.EOLPython)
 	if eolErr != nil {
 		panic("Failed to find EOL details for " + http.EOLPython + " ")
