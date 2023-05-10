@@ -1,5 +1,5 @@
-[![Run Tests](https://github.com/suhailgupta03/cuddly-eureka-/actions/workflows/test.yml/badge.svg)](https://github.com/suhailgupta03/cuddly-eureka-/actions/workflows/test.yml)
-[![codecov](https://codecov.io/gh/suhailgupta03/cuddly-eureka-/branch/main/graph/badge.svg?token=tNKcOjlxLo)](https://codecov.io/gh/suhailgupta03/cuddly-eureka-)
+[![Run Tests](https://github.com/suhailgupta03/SMM/actions/workflows/test.yml/badge.svg)](https://github.com/suhailgupta03/SMM/actions/workflows/test.yml)
+[![codecov](https://codecov.io/gh/suhailgupta03/SMM/branch/main/graph/badge.svg?token=tNKcOjlxLo)](https://codecov.io/gh/suhailgupta03/SMM)
 
 ### Build plugins and run 
 To generate the `.so` files and run the code, execute the following script
@@ -75,7 +75,7 @@ To create a plugin named `HasAutomatedTests`
 ```go
 package main
 
-import "cuddly-eureka-/types"
+import "SMM/types"
 
 // HasAutomatedTests creates a custom type
 type HasAutomatedTests struct {

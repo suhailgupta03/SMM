@@ -8,7 +8,7 @@ import (
 type RepoVul struct {
 }
 
-func (v *RepoVul) Check(repoName string) types.MaturityCheck {
+func (v *RepoVul) Check(repoName string, opts ...*string) types.MaturityCheck {
 	repoPath := util.GenerateUrlFromRepoName(repoName)
 	isVul, err := util.IsRepoVulnerable(repoPath)
 	if err != nil {

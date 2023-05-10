@@ -33,3 +33,16 @@ func TestAWS_GetLogs(t *testing.T) {
 	assert.Nil(t, err)
 	assert.NotNil(t, logs)
 }
+
+func TestAWS_GetLogsUsingQuery(t *testing.T) {
+	aws := AWSInit()
+	app := initialize.GetAppConstants()
+	query := `sort @timestamp desc
+| limit 20`
+
+	_, err := aws.GetLogsUsingQuery(app.Test.AWS.LogGroup, query)
+	assert.Nil(t, err)
+
+	_, err = aws.GetLogsUsingQuery("...", "..")
+	assert.NotNil(t, err)
+}

@@ -24,6 +24,7 @@ type MaturityYAMLStruct struct {
 type RepoAWSDetails struct {
 	LogStream string `yaml:"log-stream-name"`
 	LogGroup  string `yaml:"log-group-name"`
+	CWLQuery  string `yaml:"cwl-query"`
 }
 
 type CodeCov struct {

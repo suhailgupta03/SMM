@@ -12,7 +12,7 @@ type HasLogging struct {
 // Check takes in '-' separate log group followed by the log stream
 // example: myloggroup_mylogstream would mean the log group as
 // myloggroup and log stream as mylogstream
-func (l *HasLogging) Check(logGroupLogStream string) types.MaturityCheck {
+func (l *HasLogging) Check(logGroupLogStream string, opts ...*string) types.MaturityCheck {
 	aws := util.AWSInit()
 	inputSplit := strings.Split(logGroupLogStream, "_")
 	if len(inputSplit) < 2 {

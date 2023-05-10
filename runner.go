@@ -86,6 +86,7 @@ func main() {
 			maturityMeta := maturity.Meta()
 			var maturityValue types.MaturityCheck
 			var maturityInput string
+			var opts = make([]*string, 0)
 			if maturityMeta.EcrType {
 				if len(repo.ECR) > 0 {
 					maturityInput = repo.ECR
@@ -95,12 +96,15 @@ func main() {
 				}
 			} else if maturityMeta.Type == types.MaturityObservability {
 				maturityInput = repo.AWS.LogGroup + "_" + repo.AWS.LogStream
+				if len(repo.AWS.CWLQuery) > 0 {
+					opts = append(opts, &repo.AWS.CWLQuery)
+				}
 			} else if maturityMeta.CodeCovType == true {
 				maturityInput = fmt.Sprintf("%s_%s_%s_%s", repo.Name, appConstants.GitHubOwner, "github", repo.CodeCov.Bearer)
 			} else {
 				maturityInput = repo.Name
 			}
-			maturityValue = maturity.Check(maturityInput)
+			maturityValue = maturity.Check(maturityInput, opts...)
 			mappedMValue := types.MValueToString(maturityValue)
 			pluginResult = append(pluginResult, maturityMeta.Type, maturityMeta.Name, mappedMValue)
 			repoMaturityValues = append(repoMaturityValues, pluginResult)

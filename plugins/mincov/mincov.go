@@ -56,7 +56,7 @@ func isCodeCovActivated(repoName, owner, service, bearerToken string) (*bool, er
 
 // Check accepts the _ separated repoName, repoOwner (from the service provider like GitHub), serviceProvider, codecov bearer token
 // Reference document for parameters https://docs.codecov.com/reference/repos_retrieve
-func (minc *MinCov) Check(repoNameOwnerNameServiceProviderBearerToken string) types.MaturityCheck {
+func (minc *MinCov) Check(repoNameOwnerNameServiceProviderBearerToken string, opts ...*string) types.MaturityCheck {
 	argSplit := strings.Split(repoNameOwnerNameServiceProviderBearerToken, "_")
 	if len(argSplit) < 4 {
 		return types.MaturityValue0

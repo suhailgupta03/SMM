@@ -24,7 +24,7 @@ const (
 )
 
 type Maturity interface {
-	Check(input string) MaturityCheck
+	Check(input string, opts ...*string) MaturityCheck
 	Meta() MaturityMeta
 }
 

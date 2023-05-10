@@ -4,3 +4,4 @@ coverage.txt
 smm
 assets/plugins/*.so
 dist/*
+gen_csv

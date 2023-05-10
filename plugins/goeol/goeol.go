@@ -41,7 +41,7 @@ func checkVersionFromModFile(g *github.GitHub, repoName, owner string) (*string,
 	return nil, false
 }
 
-func (g *GoEOL) Check(repoName string) types.MaturityCheck {
+func (g *GoEOL) Check(repoName string, opts ...*string) types.MaturityCheck {
 	app := initialize.GetAppConstants()
 	git := &github.GitHub{}
 	git = git.Init(app.GitHubToken)

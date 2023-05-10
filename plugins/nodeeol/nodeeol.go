@@ -18,7 +18,7 @@ func extractCycleFromDotXString(dotxNotation string) string {
 	return split[0]
 }
 
-func (node NodeEOL) Check(repoName string) types.MaturityCheck {
+func (node NodeEOL) Check(repoName string, opts ...*string) types.MaturityCheck {
 	app := initialize.GetAppConstants()
 	g := &github.GitHub{}
 	g = g.Init(app.GitHubToken)
